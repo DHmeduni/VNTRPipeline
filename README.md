@@ -19,7 +19,7 @@ VNTR variantions in Amplicon or Native DNA Long-Read Sequencing Platforms
 The necessary prerequisites, scripts and variables for the analysis of 
 MUC1 and ACAN VNTRs is already precompiled in a docker image.
 
-https://github.com/orgs/MedGenMedUniWien/packages/container/package/vntr_pipeline
+[https://github.com/orgs/MedGenMedUniWien/packages/container/package/vntr_pipeline](https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline)
 
 ```
 docker pull ghcr.io/medgenmeduniwien/vntr_pipeline:latest
