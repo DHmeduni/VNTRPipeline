@@ -22,7 +22,7 @@ MUC1 and ACAN VNTRs is already precompiled in a docker image.
 https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
 
 ```
-docker pull ghcr.io/medgenmeduniwien/vntr_pipeline:latest
+docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
 
