@@ -62,7 +62,7 @@ subdirectory output_TRViz.
 
 The following files are then of interest:
 - best_trviz_fig_test.png
-- new_andlof_seq.xlsx
+- new_and_lof_seq.xlsx
 
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
