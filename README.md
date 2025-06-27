@@ -11,7 +11,6 @@ VNTR variantions in Amplicon or Native DNA Long-Read Sequencing Platforms
 
 ## Table of Contents
 - [Docker Image](#docker-image)
-- [Prerequisites](#prerequisites)
 - [Project Workflow](#project-workflow)
 - [License](#license)
 
@@ -25,19 +24,6 @@ https://github.com/orgs/MedGenMedUniWien/packages/container/package/vntr_pipelin
 ```
 docker pull ghcr.io/medgenmeduniwien/vntr_pipeline:latest
 ```
-
-## Prerequisites
-
-- Canu
-- Samtools
-- Bcftools
-- Clair3
-- Whatshap
-- Minimap2
-- Python >= 3.8
-- R
-- TRViz
-
 
 
 ## Project Workflow
