@@ -3,14 +3,16 @@ VNTR Analysis Pipeline for PCR and WGS datasets
 
 
 ## Introduction
-Please refer to our publication at BioRxiv. https://doi.org/10.1101/2023.09.08.556789
+Please refer to our publication at BioRxiv. https://doi.org
 
 This Pipeline can be fed with BAM or FASTQ formatted sequencing 
 information to detect and genotype
-VNTR variantions in Amplicon or Native DNA Long-Read Sequencing Platforms
+VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 
 ## Table of Contents
 - [Docker Image](#docker-image)
+- [Use](#use)
+- [Output](#output)
 - [Project Workflow](#project-workflow)
 - [License](#license)
 
@@ -25,6 +27,42 @@ https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
+## Use
+
+Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
+from HG001 through HG004) is inside the docker image (test_data)
+
+The pipeline can be used to test in interactive mode.
+
+```
+docker run --it ghcr.io/dhmeduni/vntr_pipeline:latest
+```
+
+And the pipeline started as follows:
+
+```
+/scripts/VNTR_pipeline.sh -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
+```
+
+The container can be executed using data in a mounted drive:
+
+```
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest /scripts/VNTR_pipeline.sh -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
+```
+
+## Output
+
+The output files can be found in the input directory, under the given output directory name (analysis),
+in the directory containing the file name that was analyzed ending in haplotypes, then in the
+subdirectory output_TRViz.
+
+```
+/input_folder/output_folder/sample_haplotypes/output_TRViz
+```
+
+The following files are then of interest:
+- best_trviz_fig_test.png
+- new_andlof_seq.xlsx
 
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
