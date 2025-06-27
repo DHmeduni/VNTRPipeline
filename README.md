@@ -11,7 +11,7 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 
 ## Table of Contents
 - [Docker Image](#docker-image)
-- [Use](#use)
+- [Usage](#usage)
 - [Output](#output)
 - [Project Workflow](#project-workflow)
 - [License](#license)
@@ -27,7 +27,7 @@ https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
-## Use
+## Usage
 
 Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
 from HG001 through HG004) is inside the docker image (test_data)
@@ -96,5 +96,4 @@ SOFTWARE
 
 
 ### Code
-All code used to generate the figures and analyses in this manuscript
-are available in this repository, in the `scripts` repo
+All code used to generate the figures and analyses are available upon request
