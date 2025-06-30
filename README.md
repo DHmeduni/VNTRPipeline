@@ -27,7 +27,7 @@ https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
-## Usage
+## Test Data
 
 Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
 from HG001 through HG004) is inside the docker image (test_data)
@@ -43,6 +43,8 @@ And the pipeline started as follows:
 ```
 /scripts/VNTR_pipeline.sh -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
 ```
+
+## Usage
 
 The container can be executed using data in a mounted drive:
 
