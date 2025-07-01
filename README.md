@@ -13,6 +13,7 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 - [Docker Image](#docker-image)
 - [Usage](#usage)
 - [Output](#output)
+- [Quality Control](#quality-control)
 - [Project Workflow](#project-workflow)
 - [License](#license)
 
@@ -27,7 +28,7 @@ https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
-## Usage
+## Test Data
 
 Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
 from HG001 through HG004) is inside the docker image (test_data)
@@ -35,37 +36,61 @@ from HG001 through HG004) is inside the docker image (test_data)
 The pipeline can be used to test in interactive mode.
 
 ```
-docker run --it ghcr.io/dhmeduni/vntr_pipeline:latest
+docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
 And the pipeline started as follows:
 
 ```
-/scripts/VNTR_pipeline.sh -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
+VNTR_pipeline -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
 ```
+
+## Usage
 
 The container can be executed using data in a mounted drive:
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest /scripts/VNTR_pipeline.sh -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
 ```
 
 ## Output
 
 The output files can be found in the input directory, under the given output directory name (analysis),
-in the directory containing the file name that was analyzed ending in haplotypes, then in the
-subdirectory output_TRViz.
+in the directory named for the sample.
 
 ```
-/input_folder/output_folder/sample_haplotypes/output_TRViz
+/input_folder/output_folder/Sample_Name_results
 ```
 
-The following files are then of interest:
-- best_trviz_fig_test.png
+The following files are then of particular interest:
+- best_trviz_fig.png
 - new_and_lof_seq.xlsx
 
+Assembly Information is found in the directory /assembly_mapping
+- best_hit_combined.fasta (Reference)
+- Sample_Name.bam (Alignment File)
+- Sample_Name_sv.vcf (Sniffles Variant File)
+- Sample_Name_bcf.vcf (BCF Variant File)
+
+## Quality Control
+
+If either the Sniffles or BCF Variant file are non-zero (contain variants),
+then an error message is outputed into the output folder with error description:
+```
+###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
+```
+If the length based separation of haplotypes results in an incorrect separation,
+then an error message is outputed into the output folder with error description:
+```
+###ERROR____Sample_Name_____ERROR###___length_contig____#######
+```
+
+
+  
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
+
+! Demultiplexing is performed externally to the VNTR_pipeline
 
 ## License
 
