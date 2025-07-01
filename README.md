@@ -13,6 +13,7 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 - [Docker Image](#docker-image)
 - [Usage](#usage)
 - [Output](#output)
+- [Quality Control](#quality-control)
 - [Project Workflow](#project-workflow)
 - [License](#license)
 
@@ -65,11 +66,23 @@ The following files are then of particular interest:
 - best_trviz_fig.png
 - new_and_lof_seq.xlsx
 
-Assembly Informtation is found in the directory assembly_mapping
+Assembly Information is found in the directory /assembly_mapping
 - best_hit_combined.fa (Reference)
 - Sample_Name.bam (Alignment File)
 - Sample_Name_sv.vcf (Sniffles Variant File)
 - Sample_Name_bcf.vcf (BCF Variant File)
+
+## Quality Control
+
+If either the Sniffles or BCF Variant file are non-zero (contain variants),
+then an error message is outputed into the output folder with error description:
+```###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
+```
+If the length based separation of haplotypes results in an incorrect sepeartion,
+then an error message is outputed into the output folder with error description:
+```###ERROR____Sample_Name_____ERROR###___length_contig____#######
+```
+
 
   
 ## Project Workflow
