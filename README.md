@@ -76,11 +76,13 @@ Assembly Information is found in the directory /assembly_mapping
 
 If either the Sniffles or BCF Variant file are non-zero (contain variants),
 then an error message is outputed into the output folder with error description:
-```###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
+```
+###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
 ```
 If the length based separation of haplotypes results in an incorrect sepeartion,
 then an error message is outputed into the output folder with error description:
-```###ERROR____Sample_Name_____ERROR###___length_contig____#######
+```
+###ERROR____Sample_Name_____ERROR###___length_contig____#######
 ```
 
 
