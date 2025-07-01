@@ -36,7 +36,7 @@ from HG001 through HG004) is inside the docker image (test_data)
 The pipeline can be used to test in interactive mode.
 
 ```
-docker run --it ghcr.io/dhmeduni/vntr_pipeline:latest
+docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
 And the pipeline started as follows:
@@ -67,7 +67,7 @@ The following files are then of particular interest:
 - new_and_lof_seq.xlsx
 
 Assembly Information is found in the directory /assembly_mapping
-- best_hit_combined.fa (Reference)
+- best_hit_combined.fasta (Reference)
 - Sample_Name.bam (Alignment File)
 - Sample_Name_sv.vcf (Sniffles Variant File)
 - Sample_Name_bcf.vcf (BCF Variant File)
