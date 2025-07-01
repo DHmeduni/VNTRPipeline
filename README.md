@@ -79,7 +79,7 @@ then an error message is outputed into the output folder with error description:
 ```
 ###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
 ```
-If the length based separation of haplotypes results in an incorrect sepeartion,
+If the length based separation of haplotypes results in an incorrect separation,
 then an error message is outputed into the output folder with error description:
 ```
 ###ERROR____Sample_Name_____ERROR###___length_contig____#######
