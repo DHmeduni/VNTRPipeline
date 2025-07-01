@@ -90,7 +90,7 @@ then an error message is outputed into the output folder with error description:
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
 
-! Demultiplexing is performed externally to the VNTR_pipeline
+! Basecalling and Demultiplexing is performed externally to the VNTR_pipeline
 
 ## License
 
