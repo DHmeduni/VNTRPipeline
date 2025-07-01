@@ -65,13 +65,14 @@ The following files are then of particular interest:
 - best_trviz_fig.png
 - new_and_lof_seq.xlsx
 
+
+## Quality Control
+
 Assembly Information is found in the directory /assembly_mapping
 - best_hit_combined.fasta (Reference)
 - Sample_Name.bam (Alignment File)
 - Sample_Name_sv.vcf (Sniffles Variant File)
 - Sample_Name_bcf.vcf (BCF Variant File)
-
-## Quality Control
 
 If either the Sniffles or BCF Variant file are non-zero (contain variants),
 then an error message is outputed into the output folder with error description:
