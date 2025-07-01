@@ -10,7 +10,9 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 
 ## Table of Contents
 - [Docker Image](#docker-image)
+- [Test Data](#test-data)
 - [Usage](#usage)
+- [Help](#help)
 - [Output](#output)
 - [Quality Control](#quality-control)
 - [Project Workflow](#project-workflow)
@@ -50,6 +52,43 @@ The container can be executed using data in a mounted drive:
 
 ```
 docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
+```
+
+## Help
+
+```
+ VNTR_pipeline --help
+#################################################
+VNTR Pipeline Med Uni Wien Institute Medical Genetics
+This program calls loss-of-function mutations
+in VNTR regions.
+#################################################
+The pipeline is currently only built for
+ACAN and MUC1 VNTRs, other options will be
+added in future versions.
+
+Samples must be presented as either bam or fastq.
+Output folder is a subfolder of input folder.
+Test Data from HG001 to HG004 PCR reactions is
+found in the folder /test_data and should be copied to
+an external drive if the docker container is not
+executed in an interactive mode.
+#################################################
+Syntax: script name [-a|b|c|d|f|h|i|l|m|n|p|r|s|t|u|v|w|V] <image_name>
+options:
+-h, --help    Print this Help.
+-i            Input folder path
+-o            Output folder path
+-r            Reference Name hg38_p14|chm13v2.0
+-p            PCR of WGS [0|1]
+-v            VNTR (MUC1 or ACAN, more will be added)
+-q/--quiet (future)
+--version (future)
+
+
+Example Usage:
+
+           {script_name} -p 0 -o output -i /path/to/bam/or/fastq -r reference
 ```
 
 ## Output
