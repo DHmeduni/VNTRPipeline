@@ -3,7 +3,6 @@ VNTR Analysis Pipeline for PCR and WGS datasets
 
 
 ## Introduction
-Please refer to our publication at (Soon to be published). (link)
 
 This Pipeline can be fed with BAM or FASTQ formatted sequencing 
 information to detect and genotype
