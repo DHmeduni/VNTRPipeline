@@ -41,7 +41,7 @@ docker run --it ghcr.io/dhmeduni/vntr_pipeline:latest
 And the pipeline started as follows:
 
 ```
-/scripts/VNTR_pipeline.sh -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
+VNTR_pipeline -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
 ```
 
 ## Usage
@@ -49,25 +49,33 @@ And the pipeline started as follows:
 The container can be executed using data in a mounted drive:
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest /scripts/VNTR_pipeline.sh -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
 ```
 
 ## Output
 
 The output files can be found in the input directory, under the given output directory name (analysis),
-in the directory containing the file name that was analyzed ending in haplotypes, then in the
-subdirectory output_TRViz.
+in the directory named for the sample.
 
 ```
-/input_folder/output_folder/sample_haplotypes/output_TRViz
+/input_folder/output_folder/Sample_Name_results
 ```
 
-The following files are then of interest:
-- best_trviz_fig_test.png
+The following files are then of particular interest:
+- best_trviz_fig.png
 - new_and_lof_seq.xlsx
 
+Assembly Informtation is found in the directory assembly_mapping
+- best_hit_combined.fa (Reference)
+- Sample_Name.bam (Alignment File)
+- Sample_Name_sv.vcf (Sniffles Variant File)
+- Sample_Name_bcf.vcf (BCF Variant File)
+
+  
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
+
+! Demultiplexing is performed externally to the VNTR_pipeline
 
 ## License
 
