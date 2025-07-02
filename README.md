@@ -12,7 +12,7 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 - [Docker Image](#docker-image)
 - [Test Data](#test-data)
 - [Usage](#usage)
-- [Help](#help)
+- [Options](#options)
 - [Output](#output)
 - [Quality Control](#quality-control)
 - [Project Workflow](#project-workflow)
