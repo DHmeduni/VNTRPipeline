@@ -62,7 +62,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 -o            Output folder path
 -r            Reference Name hg38_p14|chm13v2.0
 -p            PCR or WGS [0|1]
--v            VNTR (MUC1 or ACAN, more will be added)
+-v            MUC1 or ACAN, more VNTRs will be added
 -q/--quiet (future)
 --version (future)
 ```
