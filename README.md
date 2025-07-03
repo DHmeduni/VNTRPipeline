@@ -79,6 +79,7 @@ in the directory named for the sample.
 
 The following files are then of particular interest:
 - best_trviz_fig.png
+  ![Alt text](/best_trviz_fig.pdf?raw=true "Output")
 - new_and_lof_seq.xlsx
 
 
@@ -100,9 +101,6 @@ then an error message is outputed into the output folder with error description:
 ```
 ###ERROR____Sample_Name_____ERROR###___length_contig____#######
 ```
-
-
-
   
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
