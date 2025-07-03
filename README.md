@@ -67,7 +67,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 -q/--quiet (future)
 --version (future)
 ```
-For other regions the following options van be set when executing VNT_pipeline
+For other regions the following options van be set when executing VNTR_pipeline
 ```
 VNTR_COORDINATES_HG38_CHR={1}
 VNTR_COORDINATES_HG38_START={1}
