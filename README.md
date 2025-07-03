@@ -83,7 +83,7 @@ VNTR_REPEAT_SIZE={1}
 VNTR_MOTIFS={1}
 VNTR_COLORS={1}
 ```
-
+These variables can be committed to the configuration file by using the option -c {VNTR NAME}.
 
 ## Output
 
