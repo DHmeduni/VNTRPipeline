@@ -59,7 +59,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 
 ```
 -h, --help    Print Help
--i            Input folder path
+-i            Input folder path/Input file
 -o            Output folder path
 -r            Reference Name hg38_p14|chm13v2.0
 -p            PCR or WGS [0|1]
@@ -67,6 +67,23 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 -q/--quiet (future)
 --version (future)
 ```
+For other regions the following options van be set when executing VNT_pipeline
+```
+VNTR_COORDINATES_HG38_CHR={1}
+VNTR_COORDINATES_HG38_START={1}
+VNTR_COORDINATES_HG38_END={1}
+VNTR_COORDINATES_CHM13_CHR={1}
+VNTR_COORDINATES_CHM13_START={1}
+VNTR_COORDINATES_CHM13_END={1}
+VNTR_BOUNDARY_SEQUENCE_RIGHT={1}
+VNTR_BOUNDARY_SEQUENCE_LEFT={1}
+VNTR_ASSEMBLY_SIZE={1}
+VNTR_MIN_PRODUCT_SIZE={1}
+VNTR_REPEAT_SIZE={1}
+VNTR_MOTIFS={1}
+VNTR_COLORS={1}
+```
+
 
 ## Output
 
