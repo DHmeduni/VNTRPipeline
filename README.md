@@ -1,6 +1,6 @@
 # VNTRPipeline
 VNTR Analysis Pipeline for PCR and WGS datasets
-
+This pipeline is associated with the research paper: (Link will be added upon paper acceptance)
 
 ## Introduction
 
