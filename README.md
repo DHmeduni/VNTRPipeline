@@ -52,7 +52,7 @@ VNTR_pipeline -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
 The container can be executed using data in a mounted drive:
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o analysis -p 0 -v MUC1 -r chm13v2.0
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -p 0 -v MUC1 -r chm13v2.0
 ```
 
 ## Options
@@ -95,11 +95,16 @@ then an error message is outputed into the output folder with error description:
 ```
 ###ERROR____Sample_Name_____ERROR###___vcf_non_zero____#######
 ```
+There are many reasons for this (poor read quality, poor sequencing results, etc.)
+setting DELETE_TMP=N can allow you to troublshoot the problem, the tmp directory contains all files
+
 If the length based separation of haplotypes results in an incorrect separation,
 then an error message is outputed into the output folder with error description:
 ```
 ###ERROR____Sample_Name_____ERROR###___length_contig____#######
 ```
+There are several reasons for this (poor read quality, poor sequencing results, etc.)
+Setting WHATSHAP_FORCE=Y will force the haplotypes to be phased using variant data.
   
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
