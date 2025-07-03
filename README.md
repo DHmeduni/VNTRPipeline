@@ -78,9 +78,8 @@ in the directory named for the sample.
 ```
 
 The following files are then of particular interest:
-- best_trviz_fig.png
-  ![Alt text](best_trviz_fig.pdf)
-- new_and_lof_seq.xlsx
+- [best_trviz_fig.png](best_trviz_fig.pdf)
+- [new_and_lof_seq.xlsx](new_and_lof_seq.pdf)
 
 
 ## Quality Control
