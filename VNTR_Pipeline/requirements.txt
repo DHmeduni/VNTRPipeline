@@ -1,0 +1,7 @@
+argparse
+numpy
+matplotlib
+biopython
+pysam
+glob2
+regex
