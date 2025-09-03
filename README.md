@@ -70,7 +70,7 @@ q/--quiet    (future)
 -v            MUC1 or ACAN, (motif seqs and additional parameters are alredy set)
 
 
-#For other VNTRs/motifs, instead of -v following additional options have to be set
+#For other VNTRs/motifs, instead of -v, following additional options have to be set
 when executing VNTR_pipeline (MUC1 as an example):
 
 VNTR_BOUNDARY_SEQUENCE_LEFT=AAGGAGACTTCGGCTACCCAGAGAAGTTCAGTGCCCAGCTCTACTGAGAAGAATGCTGTG \
