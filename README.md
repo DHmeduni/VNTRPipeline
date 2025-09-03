@@ -63,7 +63,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 q/--quiet (future)
 
 # required
--i            Input folder path/Input file
+-i            Input folder/Input file name (BAM or FASTQ)
 -o            Output folder path
 -r            hg38 or t2t (reference genome)
 -p            pcr or wgs
