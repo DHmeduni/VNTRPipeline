@@ -59,18 +59,18 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 
 ```
 -h, --help    Print Help
---version (future)
-q/--quiet (future)
+--version    (future)
+q/--quiet    (future)
 
 # required
--i            Input folder/Input file name (BAM or FASTQ)
+-i            Input folder path/Input file name (BAM or FASTQ)
 -o            Output folder path
 -r            hg38 or t2t (reference genome)
 -p            pcr or wgs
 -v            MUC1 or ACAN (more VNTRs will be added), with motifs and additional parameters alredy set
 
 ```
-For other regions the following options van be set when executing VNTR_pipeline (MUC1 as an example)
+For other VNTRs/motifs, instead of -v following additional options have to be set when executing VNTR_pipeline (MUC1 as an example)
 ```
 -c MUC1
 VNTR_BOUNDARY_SEQUENCE_LEFT=AAGGAGACTTCGGCTACCCAGAGAAGTTCAGTGCCCAGCTCTACTGAGAAGAATGCTGTG \
@@ -84,7 +84,7 @@ VNTR_COORDINATES_HG38_END=155192239 \
 VNTR_COORDINATES_CHM13_CHR=chr1 \
 VNTR_COORDINATES_CHM13_START=154328103 \
 VNTR_COORDINATES_CHM13_END=154330802 \
-VNTR_MOTIFS=motifs_muc1.txt \
+VNTR_MOTIFS=motifs_muc1_with_char_sheme.txt \
 VNTR_COLORS=motifs_muc1_with_char_sheme.txt \
 ```
 These variables can be committed to the configuration file by using the option -c {VNTR NAME}.
