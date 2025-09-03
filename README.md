@@ -59,13 +59,16 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 
 ```
 -h, --help    Print Help
+--version (future)
+q/--quiet (future)
+
+# required
 -i            Input folder path/Input file
 -o            Output folder path
--r            Reference Name hg38_p14|chm13v2.0
--p            PCR or WGS [0|1]
--v            MUC1 or ACAN, more VNTRs will be added
--q/--quiet (future)
---version (future)
+-r            hg38 or t2t (reference genome)
+-p            pcr or wgs
+-v            MUC1 or ACAN (more VNTRs will be added), with motifs and additional parameters alredy set
+
 ```
 For other regions the following options van be set when executing VNTR_pipeline (MUC1 as an example)
 ```
