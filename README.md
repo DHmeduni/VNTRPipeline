@@ -95,7 +95,8 @@ LENGTH_1                   Allows the user to define the shorter of two lengths 
 LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000)
 MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (e.g. MIN_FREQUENCY=20)
 
-https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44
+
+- [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ```
 
