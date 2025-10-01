@@ -70,7 +70,8 @@ q/--quiet    (future)
 -v            MUC1 or ACAN, (motif seqs and additional parameters are alredy set, shown in https://github.com/DHmeduni/VNTRPipeline/blob/main/VNTR_Pipeline/scripts/lib/vntr_variables.cfg)
 
 
-#For other VNTRs/motifs, instead of -v, following additional options have to be set when executing VNTR_pipeline. These variables can be committed to the configuration file by adding the option -c {VNTR NAME}:
+#For other VNTRs/motifs, instead of -v, following additional options have to be set when executing VNTR_pipeline.
+These variables can be committed to the configuration file by adding the option -c {VNTR NAME}:
 VNTR_BOUNDARY_SEQUENCE_LEFT    Sequence at beginning of VNTR (will be used to cut out the VNTR, one mismatch allowed)
 VNTR_BOUNDARY_SEQUENCE_RIGHT   Sequence at end of VNTR (will be used to cut out the VNTR, one mismatch allowed)
 VNTR_ASSEMBLY_SIZE             Approximate size of VNTR (e.g.: 500, 1k, 3k, 10k,), used for PCR data
@@ -82,7 +83,8 @@ VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, A
 
 #Following options may be added:
 DELETE_TMP=Y               Allows user to retain the temporary files for troubleshooting
-ALL_FIGURES=Y              Only produces Figures, based on already assembled and trimmed sequences in *best_hit.fasta files, recursively to a depth of one subfolder from a folder that is given as input
+ALL_FIGURES=Y              Only produces Figures, based on already assembled and trimmed sequences in *best_hit.fasta files,
+                           recursively to a depth of one subfolder from a folder that is given as input
 NON_CODING=Y               Allows user to analyse VNTR’s in non-coding regions, LoF prediction is skipped
 VNTR_PACBIO=Y              Allows the user to process PacBio WGS Data
 WHATSHAP_FORCE=Y           Allows the used to force Whatshap haplotyping
