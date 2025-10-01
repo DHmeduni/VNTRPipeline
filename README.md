@@ -20,11 +20,9 @@ VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 - [License](#license)
 
 
-## Docker Image
+## Installation
 The necessary prerequisites, scripts and variables for the analysis of 
-MUC1 and ACAN VNTRs are already precompiled in a docker image. [Docker](https://docs.docker.com/get-started/get-docker/) need to be installed on your system.
-
-https://github.com/users/DHmeduni/packages/container/package/vntr_pipeline
+*MUC1* and *ACAN* VNTRs are already precompiled in a docker image. [Docker](https://docs.docker.com/get-started/get-docker/) need to be installed on your system.
 
 ```
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
