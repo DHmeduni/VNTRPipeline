@@ -59,8 +59,6 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 
 ```
 -h, --help    Print Help
---version    (future)
-q/--quiet    (future)
 
 # required
 -i            Input folder path/Input file name (BAM or FASTQ)
@@ -95,7 +93,7 @@ LENGTH_2                   Allows the user to define the longer of two lengths f
 MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
 
 ```
-Pre-saved options vor ACAN and MUC1 can be found here:
+Pre-saved options vor *ACAN* and *MUC1* can be found here:
 - [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ## Output
