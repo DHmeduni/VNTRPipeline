@@ -82,6 +82,17 @@ VNTR_COORDINATES_HG38=chr1:155188487-155192239 and/or VNTR_COORDINATES_CHM13=chr
 VNTR_MOTIFS=motifs_muc1_with_char_sheme.txt \
 
 These variables can be committed to the configuration file by adding the option -c {VNTR NAME}.
+
+#Following options may be added
+DELETE_TMP=Y               Allows user to retain the temporary files for troubleshooting
+ALL_FIGURES=Y              Produces all Figures recursively to a depth of one subfolder from a folder that is given as input
+NON_CODING=Y               Allows user to analyse VNTR’s in non-coding regions, LoF prediction is skipped
+VNTR_PACBIO=Y              Allows the user to process PacBio WGS Data
+WHATSHAP_FORCE=Y           Allows the used to force Whatshap haplotyping
+CONFIG_FILE                Allows the user to define another path for the configuration file (CONFIG_FILE=/path/to/file)
+LENGTH_1                   Allows the user to define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500)
+LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000)
+
 ```
 ## Output
 
