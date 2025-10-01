@@ -67,7 +67,7 @@ q/--quiet    (future)
 -o            Output folder path
 -r            hg38 or t2t (reference genome)
 -p            pcr or wgs
--v            MUC1 or ACAN, (motif seqs and additional parameters are alredy set, shown in https://github.com/DHmeduni/VNTRPipeline/blob/main/VNTR_Pipeline/scripts/lib/vntr_variables.cfg)
+-v            MUC1 or ACAN, (motif seqs and additional parameters are already set)
 
 
 #For other VNTRs/motifs, instead of -v, following additional options have to be set when executing VNTR_pipeline.
