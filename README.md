@@ -34,24 +34,17 @@ docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
 from HG001 through HG004) is inside the docker image (test_data)
 
-The pipeline can be used to test in interactive mode.
-
 ```
-docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest
+docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o analysis -p pcr -v MUC1 -r chm13
 ```
 
-And the pipeline started as follows:
-
-```
-VNTR_pipeline -i /test_data -o analysis -p pcr -v MUC1 -r chm13
-```
 
 ## Usage
 
-The container can be executed using data in a mounted drive:
+The container can be executed using data in a mounted drive (example usage):
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r chm13 -p pcr -v MUC1 
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r chm13 -p pcr -v MUC1 
 ```
 
 ## Options
