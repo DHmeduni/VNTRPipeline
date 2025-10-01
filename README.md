@@ -53,7 +53,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 -h, --help    Print Help
 
 # required
--i            Input folder path or Input file name (.bam or fastq/fastq.gz format)
+-i            Input folder path (all existing bam and fastq/fastq.gz files are used for analysis) or speficy input file name directly
 -o            Output folder path
 -r            hg38 or chm13 (reference genome)
 -p            pcr or wgs
