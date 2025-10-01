@@ -43,7 +43,7 @@ docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest
 And the pipeline started as follows:
 
 ```
-VNTR_pipeline -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
+VNTR_pipeline -i /test_data -o analysis -p pcr -v MUC1 -r chm13
 ```
 
 ## Usage
@@ -51,7 +51,7 @@ VNTR_pipeline -i /test_data -o analysis -p 0 -v MUC1 -r chm13v2.0
 The container can be executed using data in a mounted drive:
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -p 0 -v MUC1 -r chm13v2.0
+docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r chm13 -p pcr -v MUC1 
 ```
 
 ## Options
@@ -62,7 +62,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 # required
 -i            Input folder path/Input file name (BAM or FASTQ)
 -o            Output folder path
--r            hg38 or t2t (reference genome)
+-r            hg38 or chm13 (reference genome)
 -p            pcr or wgs
 -v            MUC1 or ACAN, (motif seqs and additional parameters are already set)
 
