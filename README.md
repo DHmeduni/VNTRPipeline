@@ -98,6 +98,9 @@ MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequ
 https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44
 
 ```
+
+- [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
+
 ## Output
 
 The output files can be found in the input directory, under the given output directory name (analysis),
