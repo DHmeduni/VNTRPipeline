@@ -129,7 +129,6 @@ Setting WHATSHAP_FORCE=Y will force the haplotypes to be phased using variant da
 ## Project Workflow
 ![Alt text](/VNTRPipeline_workflow.png?raw=true "Project workflow")
 
-! Basecalling and Demultiplexing is performed externally to the VNTR_pipeline
 
 ## License
 
