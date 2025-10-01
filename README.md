@@ -32,10 +32,10 @@ docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ## Test Data
 
 Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
-from HG001 through HG004) is inside the docker image (test_data)
+from HG001 through HG004) is inside the docker image ( in the test_data folder)
 
 ```
-docker run -it ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o analysis -p pcr -v MUC1 -r chm13
+docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r chm13 -p pcr -v MUC1 
 ```
 
 
@@ -53,7 +53,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 -h, --help    Print Help
 
 # required
--i            Input folder path/Input file name (BAM or FASTQ)
+-i            Input folder path or Input file name (.bam or fastq/fastq.gz format)
 -o            Output folder path
 -r            hg38 or chm13 (reference genome)
 -p            pcr or wgs
