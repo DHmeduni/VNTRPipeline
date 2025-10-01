@@ -71,16 +71,16 @@ q/--quiet    (future)
 
 
 #For other VNTRs/motifs, instead of -v, following additional options have to be set
-when executing VNTR_pipeline:
+when executing VNTR_pipeline, usage:
 
-VNTR_BOUNDARY_SEQUENCE_LEFT=AAGGAGACTTCGGCTACCCAGAGAAGTTCAGTGCCCAGCTCTACTGAGAAGAATGCTGTG \
-VNTR_BOUNDARY_SEQUENCE_RIGHT=GGCTCCACCGCCCCTCCAGTCCACAATGTCACCTCGGCCTCAGGCTCTGCATCAGGCTCA \
-VNTR_ASSEMBLY_SIZE=5k \
-VNTR_MIN_PRODUCT_SIZE=2000 \
-VNTR_REPEAT_SIZE=60 \
-VNTR_COORDINATES_HG38=chr1:155188487-155192239 and/or VNTR_COORDINATES_CHM13=chr1:154328103-154330802\
-VNTR_MOTIFS=motifs_muc1_with_char_sheme.txt \
-
+VNTR_BOUNDARY_SEQUENCE_LEFT    Sequence at beginning of VNTR (will be used to cut out the VNTR, one mismatch allowed)
+VNTR_BOUNDARY_SEQUENCE_RIGHT   Sequence at end of VNTR (will be used to cut out the VNTR, one mismatch allowed)
+VNTR_ASSEMBLY_SIZE             Approximate size of VNTR (e.g.: 500, 1k, 3k, 10k,), used for PCR data
+VNTR_MIN_PRODUCT_SIZE          Minimum PCR Product Size expected, necessary for filtering
+VNTR_REPEAT_SIZE               The Number of bases found in one repeat unit of the VNTR
+VNTR_COORDINATES_HG38          T2T-chm13v2.0 Referernce coordinates of the VNTR for filtering
+VNTR_COORDINATES_CHM13         GRCh38.p14 Referernce coordinates of the VNTR for filtering
+VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, Aplhanumeric Designation and Color code
 These variables can be committed to the configuration file by adding the option -c {VNTR NAME}.
 
 
@@ -92,9 +92,9 @@ VNTR_PACBIO=Y              Allows the user to process PacBio WGS Data
 WHATSHAP_FORCE=Y           Allows the used to force Whatshap haplotyping
 VNTR_ALL=Y                 Allows user to analyse all VNTR’s (assemblies or polished sequences) found by the workflow (pseudogenes/duplications)
 CONFIG_FILE                Allows the user to define another path for the configuration file (CONFIG_FILE=/path/to/file)
-LENGTH_1                   Allows the user to define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500)
-LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000)
-MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (e.g. MIN_FREQUENCY=20)
+LENGTH_1                   Allows the user to define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500), default is automatic
+LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000), default is automatic
+MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
 
 ```
 
