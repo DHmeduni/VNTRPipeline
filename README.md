@@ -70,9 +70,7 @@ q/--quiet    (future)
 -v            MUC1 or ACAN, (motif seqs and additional parameters are alredy set, shown in https://github.com/DHmeduni/VNTRPipeline/blob/main/VNTR_Pipeline/scripts/lib/vntr_variables.cfg)
 
 
-#For other VNTRs/motifs, instead of -v, following additional options have to be set
-when executing VNTR_pipeline, usage:
-
+#For other VNTRs/motifs, instead of -v, following additional options have to be set when executing VNTR_pipeline. These variables can be committed to the configuration file by adding the option -c {VNTR NAME}:
 VNTR_BOUNDARY_SEQUENCE_LEFT    Sequence at beginning of VNTR (will be used to cut out the VNTR, one mismatch allowed)
 VNTR_BOUNDARY_SEQUENCE_RIGHT   Sequence at end of VNTR (will be used to cut out the VNTR, one mismatch allowed)
 VNTR_ASSEMBLY_SIZE             Approximate size of VNTR (e.g.: 500, 1k, 3k, 10k,), used for PCR data
@@ -81,8 +79,6 @@ VNTR_REPEAT_SIZE               The Number of bases found in one repeat unit of t
 VNTR_COORDINATES_HG38          T2T-chm13v2.0 Referernce coordinates of the VNTR for filtering
 VNTR_COORDINATES_CHM13         GRCh38.p14 Referernce coordinates of the VNTR for filtering
 VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, Aplhanumeric Designation and Color code
-These variables can be committed to the configuration file by adding the option -c {VNTR NAME}.
-
 
 #Following options may be added:
 DELETE_TMP=Y               Allows user to retain the temporary files for troubleshooting
@@ -97,7 +93,7 @@ LENGTH_2                   Allows the user to define the longer of two lengths f
 MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
 
 ```
-
+Pre-saved options vor ACAN and MUC1 can be found here:
 - [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ## Output
