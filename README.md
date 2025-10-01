@@ -71,7 +71,7 @@ q/--quiet    (future)
 
 
 #For other VNTRs/motifs, instead of -v, following additional options have to be set
-when executing VNTR_pipeline (MUC1 as an example):
+when executing VNTR_pipeline:
 
 VNTR_BOUNDARY_SEQUENCE_LEFT=AAGGAGACTTCGGCTACCCAGAGAAGTTCAGTGCCCAGCTCTACTGAGAAGAATGCTGTG \
 VNTR_BOUNDARY_SEQUENCE_RIGHT=GGCTCCACCGCCCCTCCAGTCCACAATGTCACCTCGGCCTCAGGCTCTGCATCAGGCTCA \
@@ -83,9 +83,10 @@ VNTR_MOTIFS=motifs_muc1_with_char_sheme.txt \
 
 These variables can be committed to the configuration file by adding the option -c {VNTR NAME}.
 
+
 #Following options may be added:
 DELETE_TMP=Y               Allows user to retain the temporary files for troubleshooting
-ALL_FIGURES=Y              Produces all Figures recursively to a depth of one subfolder from a folder that is given as input
+ALL_FIGURES=Y              Only produces Figures, based on already assembled and trimmed sequences in *best_hit.fasta files, recursively to a depth of one subfolder from a folder that is given as input
 NON_CODING=Y               Allows user to analyse VNTR’s in non-coding regions, LoF prediction is skipped
 VNTR_PACBIO=Y              Allows the user to process PacBio WGS Data
 WHATSHAP_FORCE=Y           Allows the used to force Whatshap haplotyping
@@ -94,9 +95,6 @@ CONFIG_FILE                Allows the user to define another path for the config
 LENGTH_1                   Allows the user to define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500)
 LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000)
 MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (e.g. MIN_FREQUENCY=20)
-
-
-- [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ```
 
