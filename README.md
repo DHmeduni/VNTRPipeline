@@ -83,14 +83,14 @@ VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, A
 DELETE_TMP=Y               Allows user to retain the temporary files for troubleshooting
 ALL_FIGURES=Y              Only produces Figures, based on already assembled and trimmed sequences in *best_hit.fasta files,
                            recursively to a depth of one subfolder from a folder that is given as input
-NON_CODING=Y               Allows user to analyse VNTR’s in non-coding regions, LoF prediction is skipped
-VNTR_PACBIO=Y              Allows the user to process PacBio WGS Data
-WHATSHAP_FORCE=Y           Allows the used to force Whatshap haplotyping
-VNTR_ALL=Y                 Allows user to analyse all VNTR’s (assemblies or polished sequences) found by the workflow (pseudogenes/duplications)
-CONFIG_FILE                Allows the user to define another path for the configuration file (CONFIG_FILE=/path/to/file)
-LENGTH_1                   Allows the user to define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500), default is automatic
-LENGTH_2                   Allows the user to define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000), default is automatic
-MIN_FREQUENCY              Allows the user to temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
+NON_CODING=Y               Analyse VNTR’s in non-coding regions, LoF prediction is skipped
+VNTR_PACBIO=Y              Process PacBio WGS Data
+WHATSHAP_FORCE=Y           Force Whatshap haplotyping
+VNTR_ALL=Y                 Analyse all VNTR’s (assemblies or polished sequences) found by the workflow (pseudogenes/duplications)
+CONFIG_FILE                Define another path for the configuration file (CONFIG_FILE=/path/to/file)
+LENGTH_1                   Define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500), default is automatic
+LENGTH_2                   Define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000), default is automatic
+MIN_FREQUENCY              Temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
 
 ```
 Pre-saved options vor *ACAN* and *MUC1* can be found here:
