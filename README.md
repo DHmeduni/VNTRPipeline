@@ -72,7 +72,7 @@ VNTR_COORDINATES_CHM13         GRCh38.p14 Referernce coordinates of the VNTR for
 VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, Aplhanumeric Designation and Color code
 
 #Following options may be added:
-DELETE_TMP=Y               Retain the temporary files for troubleshooting
+DELETE_TMP=N               Retain the temporary files for troubleshooting
 ALL_FIGURES=Y              Only produces Figures, based on already assembled and trimmed sequences of *best_hit.fasta files,
                            recursively to a depth of one subfolder from a folder that is given as input
 NON_CODING=Y               Analyse VNTRs in non-coding regions, LoF prediction is skipped
