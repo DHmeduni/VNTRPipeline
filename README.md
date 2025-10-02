@@ -85,7 +85,7 @@ LENGTH_2                   Define the longer of two lengths for length based hap
 MIN_FREQUENCY              Temporarly lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
 
 ```
-Pre-saved options vor *ACAN* and *MUC1* can be found here:
+Pre-saved options for *ACAN* and *MUC1* can be found here:
 - [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ## Output
