@@ -101,6 +101,7 @@ VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder
 ```
 
 ## Output
+**Files in \*results Folder (one folder per sample)**
 | **_File name_**                        | **_Description_**                                                                                                                                                                                                                                                                                                        |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | \*_haplotype1_best_hit.fasta           | Assembled/Consensus sequence of haplotype 1. The most common sequence found after error correction in PCR and filtering using boundary sequences and the first hit (closest to boundary sequence left) in WGS for haplotype 1                                                                                            |
@@ -119,12 +120,12 @@ VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder
 | \*sv.vcf                               | Sniffles2 Variant File from assembly alignment                                                                                                                                                                                                                                                                           |
 | \*best_hit_combined.fasta              | Reference File for alignment of Filtered Reads     
 
-The output files can be found in the input directory, under the given output directory name (analysis),
-in the directory named for the sample.
-
-```
-/input_folder/output_folder/Sample_Name_results
-```
+**Other files/folders**
+| all_figures folder containing \*best_trviz_fig.png | Graphic VNTR output of all haplotypes and samples                                        |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| All_Samples_new_and_lof_seqs.xlsx                  | All new and loss-of-function motifs and their positions combined for all samples         |
+| All_Samples_seqs_distribution.xlsx                 | Distribution of unique VNTR sequences after assembly/correction combined for all samples |
+| script.log                                         | Log file                                                                                 |
 
 The following files are then of particular interest:
 - [best_trviz_fig.png](best_trviz_fig.pdf)
