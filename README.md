@@ -55,7 +55,7 @@ docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNT
 # required
 -i            Input folder path (all existing bam and fastq/fastq.gz files are used for analysis) or speficy input file name directly
 -o            Output folder path
--r            hg38 or chm13 (reference genome)
+-r            hg38 or t2t (reference genome)
 -p            pcr or wgs
 -v            MUC1 or ACAN, (motif seqs and additional parameters are already set)
 
@@ -67,8 +67,8 @@ VNTR_BOUNDARY_SEQUENCE_RIGHT   Sequence at end of VNTR (will be used to cut out 
 VNTR_ASSEMBLY_SIZE             Approximate size of VNTR (e.g.: 500, 1k, 3k, 10k,), used for PCR data
 VNTR_MIN_PRODUCT_SIZE          Minimum PCR Product Size expected, necessary for filtering
 VNTR_REPEAT_SIZE               The Number of bases found in one repeat unit of the VNTR
-VNTR_COORDINATES_HG38          T2T-chm13v2.0 Referernce coordinates of the VNTR for filtering
-VNTR_COORDINATES_CHM13         GRCh38.p14 Referernce coordinates of the VNTR for filtering
+VNTR_COORDINATES_T2T           T2T-chm13v2.0 Referernce coordinates of the VNTR for filtering
+VNTR_COORDINATES_HG38          GRCh38.p14 Referernce coordinates of the VNTR for filtering
 VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, Aplhanumeric Designation and Color code
 
 #Following options may be added:
@@ -89,6 +89,23 @@ Pre-saved options for *ACAN* and *MUC1* can be found here:
 - [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
 ## Output
+| **_File name_**                        | **_Description_**                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| \*_haplotype1_best_hit.fasta           | Assembled/Consensus sequence of haplotype 1. The most common sequence found after error correction in PCR and filtering using boundary sequences and the first hit (closest to boundary sequence left) in WGS for haplotype 1                                                                                            |
+| \*_haplotype2_best_hit.fasta           | Assembled/Consensus sequence of haplotype 2. The most common sequence found after error correction in PCR and filtering using boundary sequences and the first hit (closest to boundary sequence left) in WGS for haplotype 2                                                                                            |
+| \*_haplotype1_result.fasta             | All unique sequences with counts found after filtering with the boundary sequences in PCR, or all hits found in WGS for haplotype 1                                                                                                                                                                                      |
+| \*_haplotype2_result.fasta             | All unique sequences with counts found after filtering with the boundary sequences in PCR, or all hits found in WGS for haplotype 2                                                                                                                                                                                      |
+| \*_length_histogram.png                | If PCR a read length histogram is produced after filtering for the alignment region                                                                                                                                                                                                                                      |
+| \*_length_histogram.txt                | If PCR a text file containing variables used and results of length based haplotype separation (min_product_size, range_for_length_filtering, repeat_size, min_frequency \\ number of reads/entries für halpotype 1  \\ number of reads/entries für halpotype 2 \\ size range of haplotype 1 \\ size range of haplotype 2 |
+| best_trviz_fig.png                     | VNTR composition figure                                                                                                                                                                                                                                                                                                  |
+| motifs_evaluation.xlsx                 | All found VNTR motifs including their occurences and ID (assigned letter)                                                                                                                                                                                                                                                |
+| new_and_lof_seqs.xlsx                  | All New and Loss of Function Motifs and their positions within the VNTR are shown here                                                                                                                                                                                                                                   |
+| seq_distribution.xlsx                  | Distribution of uniques VNTR sequences after assembly/correction                                                                                                                                                                                                                                                         |
+| **_Part of Assembly_Mapping folder:_** |                                                                                                                                                                                                                                                                                                                          |
+| \*haplotypes.bam                       | Uncorrected haplotype assigned Reads aligned to the best_hit_combined.fasta file                                                                                                                                                                                                                                         |
+| \*bcf.vcf                              | BCF Variant File from assembly alignment                                                                                                                                                                                                                                                                                 |
+| \*sv.vcf                               | Sniffles2 Variant File from assembly alignment                                                                                                                                                                                                                                                                           |
+| \*best_hit_combined.fasta              | Reference File for alignment of Filtered Reads     
 
 The output files can be found in the input directory, under the given output directory name (analysis),
 in the directory named for the sample.
