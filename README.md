@@ -10,10 +10,10 @@ information to detect and genotype
 VNTR variants in Amplicon or Native DNA Long-Read Sequencing Data.
 
 ## Table of Contents
-- [Docker Image](#docker-image)
+- [Installation](#Installation)
+- [Options](#options)
 - [Test Data](#test-data)
 - [Usage](#usage)
-- [Options](#options)
 - [Output](#output)
 - [Quality Control](#quality-control)
 - [Project Workflow](#project-workflow)
