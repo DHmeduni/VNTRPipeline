@@ -82,13 +82,13 @@ docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:lat
 
 ## Usage
 
-The container can be executed using data in a mounted drive (example usage):
+The container can be executed using data in a mounted drive (example usage),
 
 ```
 docker run --rm -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
 ```
 
-or in interactive mode
+or in interactive mode.
 ```
 docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline
 VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
