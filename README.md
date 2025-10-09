@@ -123,6 +123,7 @@ VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder
 
 **Other files/folders**
 | all_figures folder containing \*best_trviz_fig.png | Graphic VNTR output of all haplotypes and samples                                        |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | All_Samples_new_and_lof_seqs.xlsx                  | All new and loss-of-function motifs and their positions combined for all samples         |
 | All_Samples_seqs_distribution.xlsx                 | Distribution of unique VNTR sequences after assembly/correction combined for all samples |
 | script.log                                         | Log file                                                                                 |
