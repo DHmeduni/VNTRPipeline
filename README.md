@@ -29,34 +29,7 @@ The necessary prerequisites, scripts and variables for the analysis of
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
-## Test Data
 
-Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
-from HG001 through HG004) is inside the docker image (inside test_data)
-
-```
-docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
-```
-
-
-## Usage
-
-The container can be executed using data in a mounted drive (example usage):
-
-```
-docker run --rm -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
-```
-
-or in interactive mode
-```
-docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline
-VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
-```
-For other VNTRs following parameters are necessary (example for CEL WGS data)
-
-```
-VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder> -r hg38 -p wgs VNTR_BOUNDARY_SEQUENCE_LEFT=TATCTGGCGCTGCCCACAGTGACCGACCAG VNTR_BOUNDARY_SEQUENCE_RIGHT=AAGGAAGCTCAGATGCCTGCAGTCATTAGGTTTTAG VNTR_ASSEMBLY_SIZE=560 VNTR_MIN_PRODUCT_SIZE=200 VNTR_REPEAT_SIZE=33 VNTR_COORDINATES_HG38=chr9:133071168-133071728 VNTR_MOTIFS=<folder_to>/motifs_cel_with_char_scheme.txt (VNTR_ALL=Y)
-```
 ## Options
 
 ```
@@ -98,6 +71,35 @@ MIN_FREQUENCY              Temporarly lower the minimum frequency threshold for 
 Pre-saved options for *ACAN* and *MUC1* can be found here:
 - [configuration_file](https://github.com/DHmeduni/VNTRPipeline/blob/f7c60b42f65db005dcbfd38ac3a87cf833541033/VNTR_Pipeline/scripts/lib/vntr_variables.cfg#L1C1-L18C44)
 
+## Test Data
+
+Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
+from HG001 through HG004) is inside the docker image (inside test_data)
+
+```
+docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
+```
+
+
+## Usage
+
+The container can be executed using data in a mounted drive (example usage):
+
+```
+docker run --rm -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
+```
+
+or in interactive mode
+```
+docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline
+VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
+```
+For other VNTRs following parameters are necessary (example for CEL WGS data)
+
+```
+VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder> -r hg38 -p wgs VNTR_BOUNDARY_SEQUENCE_LEFT=TATCTGGCGCTGCCCACAGTGACCGACCAG VNTR_BOUNDARY_SEQUENCE_RIGHT=AAGGAAGCTCAGATGCCTGCAGTCATTAGGTTTTAG VNTR_ASSEMBLY_SIZE=560 VNTR_MIN_PRODUCT_SIZE=200 VNTR_REPEAT_SIZE=33 VNTR_COORDINATES_HG38=chr9:133071168-133071728 VNTR_MOTIFS=<folder_to>/motifs_cel_with_char_scheme.txt (VNTR_ALL=Y)
+```
+
 ## Output
 | **_File name_**                        | **_Description_**                                                                                                                                                                                                                                                                                                        |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -130,6 +132,8 @@ The following files are then of particular interest:
 
 
 ## Quality Control
+
+The file *seqs_distribution.xlsx* in the *results folder shows the distribution of all corrected and trimmed sequences per haplotype. When analyzing PCR data, the most common sequence should represent a majority of all sequences found (first value compared with all subsequent values). If the first and second values are not significantly different, then there are two sequences with similar frequency present in one haplotype, indicating a problem with haplotype separation or the presence of a mosaic background. When analyzing WGS data, the file indicates the number of assembled and extractd VNTR sequences.
 
 Assembly Information is found in the directory /assembly_mapping
 - best_hit_combined.fasta (Reference)
