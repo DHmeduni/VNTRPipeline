@@ -29,7 +29,6 @@ The necessary prerequisites, scripts and variables for the analysis of
 docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ```
 
-
 ## Options
 
 ```
