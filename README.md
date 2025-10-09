@@ -35,7 +35,7 @@ Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR
 from HG001 through HG004) is inside the docker image (inside test_data)
 
 ```
-docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r chm13 -p pcr -v MUC1 
+docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
 ```
 
 
@@ -44,9 +44,19 @@ docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:lat
 The container can be executed using data in a mounted drive (example usage):
 
 ```
-docker run -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r chm13 -p pcr -v MUC1 
+docker run --rm -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
 ```
 
+or in interactive mode
+```
+docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline
+VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
+```
+For other VNTRs following parameters are necessary (example for CEL WGS data)
+
+```
+VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder> -r hg38 -p wgs VNTR_BOUNDARY_SEQUENCE_LEFT=TATCTGGCGCTGCCCACAGTGACCGACCAG VNTR_BOUNDARY_SEQUENCE_RIGHT=AAGGAAGCTCAGATGCCTGCAGTCATTAGGTTTTAG VNTR_ASSEMBLY_SIZE=560 VNTR_MIN_PRODUCT_SIZE=200 VNTR_REPEAT_SIZE=33 VNTR_COORDINATES_HG38=chr9:133071168-133071728 VNTR_MOTIFS=<folder_to>/motifs_cel_with_char_scheme.txt (VNTR_ALL=Y)
+```
 ## Options
 
 ```
