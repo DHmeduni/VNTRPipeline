@@ -68,19 +68,14 @@ validate_vntr_variables() {
         "VNTR_MIN_PRODUCT_SIZE"
         "VNTR_REPEAT_SIZE"
         "VNTR_MOTIFS"
-        "VNTR_COLORS"
     )
 
     local hg38_vars=(
-        "VNTR_COORDINATES_HG38_CHR"
-        "VNTR_COORDINATES_HG38_START"
-        "VNTR_COORDINATES_HG38_END"
+        "VNTR_COORDINATES_HG38"
     )
 
-    local chm13_vars=(
-        "VNTR_COORDINATES_CHM13_CHR"
-        "VNTR_COORDINATES_CHM13_START"
-        "VNTR_COORDINATES_CHM13_END"
+    local t2t_vars=(
+        "VNTR_COORDINATES_T2T"
     )
 
     local missing=0
@@ -103,16 +98,16 @@ validate_vntr_variables() {
         fi
     done
 
-    local chm13_missing=0
-    for var in "${chm13_vars[@]}"; do
+    local t2t_missing=0
+    for var in "${t2t_vars[@]}"; do
         if ! printenv "$var" >/dev/null && [[ -z "${!var+x}" ]]; then
             missing_vars+=("$var")
-            chm13_missing=1
+            t2t_missing=1
         fi
     done
 
     # --- Require at least one full coordinate group ---
-    if [[ "$hg38_missing" -eq 1 && "$chm13_missing" -eq 1 ]]; then
+    if [[ "$hg38_missing" -eq 1 && "$t2t_missing" -eq 1 ]]; then
         missing=1
     fi
 
@@ -133,8 +128,8 @@ validate_vntr_variables() {
         done
     fi
 
-    if [[ "$chm13_missing" -eq 1 ]]; then
-        for var in "${chm13_vars[@]}"; do
+    if [[ "$t2t_missing" -eq 1 ]]; then
+        for var in "${t2t_vars[@]}"; do
             unset "$var"
         done
     fi
@@ -163,7 +158,7 @@ commit_vntr_variables() {
         echo ""
         echo "$section_header"
         # Print all VNTR_* variables that are set
-        compgen -v | grep '^VNTR_' | while read -r var; do
+        { compgen -v | grep '^VNTR_'; echo NON_CODING; } | while read -r var; do
             # Only print if variable is set and not empty
             if [[ -n "${!var}" ]]; then
                 printf "%s %s\n" "$var" "${!var}"

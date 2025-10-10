@@ -45,21 +45,29 @@ for (sample_name in all_sample_names)
    
   
     dna_set_rev=reverseComplement(dna_set_rev)
+    dna_set_rev=rev(dna_set_rev)
     all_dna_set=c(dna_set,dna_set_rev)
+    all_dna_set=as.vector(all_dna_set)
+    #all_dna_set=unname(all_dna_set)
   }
   else if (file.exists(paste0(sample_name,"/",sample_name,".trimmedReads_for.fasta")))
+  {
       all_dna_set=readDNAStringSet(paste0(sample_name,"/",sample_name,".trimmedReads_for.fasta"))
+      all_dna_set=as.vector(all_dna_set)
+      #all_dna_set=unname(all_dna_set)
+  }
   else if (file.exists(paste0(sample_name,"/",sample_name,".trimmedReads_rev.fasta")))
   {
     dna_set_rev=readDNAStringSet(paste0(sample_name,"/",sample_name,".trimmedReads_rev.fasta"))
     dna_set_rev=reverseComplement(dna_set_rev)
-    all_dna_set=dna_set_rev
+    all_dna_set=rev(as.vector(dna_set_rev))
+    #all_dna_set=unname(all_dna_set)
   }
   else
   {
     next
   }
-  all_dna_table=sort(table(all_dna_set),decreasing = TRUE)
+  all_dna_table=sort(table(factor(all_dna_set,levels=unique(all_dna_set))),decreasing = TRUE)
   dna_table_char=as.character(names(all_dna_table))
   sample_name_clean=sub("^\\./", "", sample_name)
   seq_names=paste(sample_name_clean, "_seq",seq(1:length(all_dna_table)), " (",as.character(all_dna_table),")",sep="")

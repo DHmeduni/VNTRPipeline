@@ -100,11 +100,13 @@ parse_options() {
                 whatshap=Y
                 whatshap_now=Y;;
             v) # which vntr to look at
-                vntr="$OPTARG"
-                case "${vntr^^}" in
-                    MUC1|ACAN) ;;
-                    *) echo "Invalid Option: $vntr Please see Help" >&2; exit 1 ;;
-                esac ;;
+                vntr="${OPTARG^^}"  # Make uppercase
+                # Check $CONFIG_FILE for line containing #$vntr
+                if ! grep -q "#$vntr" "$CONFIG_FILE"; then
+                    echo "Error: #$vntr not found in $CONFIG_FILE" >&2
+                    exit 1
+                fi
+                ;;
             V) # VNTR pipeline
                 whole_pipeline=Y ;;
             -) # Parse long option (long option branch)
@@ -138,7 +140,8 @@ log() {
     # Log only the command itself with expanded variables (but not its output)
     echo "\$ $*" >> "$LOGFILE"
     # Execute the command, redirect stdout and stderr to the console, but NOT log to the file
-    "$@" 2>&1 > /proc/self/fd/1 2>/proc/self/fd/2
+    #"$@" 2>&1 > /proc/self/fd/1 2>/proc/self/fd/2
+    "$@"
 }
 
 version_log() {
@@ -159,12 +162,18 @@ vntr_coordinates() {
 
     if echo "$reference_path" | grep -qE "(hg38|chm13)"; then
         local ref=$(echo "$reference_path" | grep -oE "(hg38|chm13)" | head -n 1)
+        [[ $ref == "chm13" ]] && ref="t2t"
     else
-        echo "Neither hg38 nor chm13 found in the path." 
+        echo "Neither hg38 nor t2t found in the path." 
         Help
         exit 1
     fi
     
+    eval "VNTR_COORDINATES_${ref^^}_CHR=\${VNTR_COORDINATES_${ref^^}%%:*}"
+    eval "temp=\"\${VNTR_COORDINATES_${ref^^}#*:}\""
+    eval "VNTR_COORDINATES_${ref^^}_START=\${temp%%-*}"
+    eval "VNTR_COORDINATES_${ref^^}_END=\${temp#*-}"
+
     local chr_name="VNTR_COORDINATES_"${ref^^}"_CHR"
     local start_name="VNTR_COORDINATES_"${ref^^}"_START"
     local end_name="VNTR_COORDINATES_"${ref^^}"_END"
@@ -203,6 +212,7 @@ process_bam_to_fastq() {
         if [[ -f "$bam_file" ]]; then
             fastq_file="$2"/"$(basename "${bam_file%.bam}")".fastq
             log samtools fastq -T '*' "$bam_file" > "$fastq_file"
+            #log samtools fastq "$bam_file" > "$fastq_file"
         fi
     done
     conda deactivate
@@ -213,13 +223,13 @@ run_minimap2() {
     version_log minimap2 --version | head -n 1
     local ref_path="${2:-$reference_path}"  # Use $2 if provided, otherwise default to reference_path
     
-    log minimap2 -Yax lr:hq -t 32 -y -MD -d "${ref_path%.bam}.mmi" "$ref_path"
+    log minimap2 -Yax lr:hq -t 32 -y --MD -d "${ref_path%.bam}.mmi" "$ref_path"
 
     for fastq_file in "$1"/*.fastq; do
         if [[ -f "$fastq_file" ]]; then
             sam_file="${fastq_file%.fastq}.sam"
             local sam_path="${3:-$sam_file}"
-            log minimap2 -Yax lr:hq -t 32 -y -MD \
+            log minimap2 -Yax lr:hq -t 32 -y --MD \
                 -o "$sam_path" \
                 "${ref_path%.bam}.mmi" \
                 "$fastq_file"
@@ -253,7 +263,7 @@ process_sam_to_bam() {
 
     local coordinates=$(vntr_coordinates)
 
-    if [[ -n "$coordinates" ]]; then
+    if [[ -n "$coordinates" ]] && [[ "$assembly_mapping" != "Y" ]]; then
         log samtools view -b -@ 32 "${output_prefix}.tmp.bam" "$coordinates" | \
         log samtools sort -@ 32 -o "${output_prefix}.bam" -
         log samtools index -@ 32 "${output_prefix}.bam"
@@ -283,9 +293,13 @@ extract_lengths() {
     echo "$output" >> "$LOGFILE"
     last_line=$(echo "$output" | tail -n 1)
     echo "Here is the last_line: $last_line" >> "$LOGFILE"
-    echo "Here is the length of last_line ${#last_line}" >> "$LOGFILE"
+    echo "Here is the word count of last_line $(wc -w <<< "$last_line")" >> "$LOGFILE"
+    first_line=$(echo "$output" | head -n 1)
+    echo "Here is the last_line: $first_line" >> "$LOGFILE"
+    echo "Here is the word count of last_line $(wc -w <<< "$first_line")" >> "$LOGFILE"
 
-    if [[ $(echo "$last_line" | wc -w) -lt 2 ]]; then
+
+    if [[ $(echo "$first_line" | wc -w) -lt 2 ]]; then
         echo "Only one or no maxima" >> "$LOGFILE"
         whatshap_now=Y
         return 1       
@@ -445,6 +459,14 @@ main() {
             elif compgen -G "$input_folder/*.fastq" > /dev/null; then
                 cp "$input_folder"/*.fastq "$output_folder"
                 run_minimap2 "$output_folder"
+            elif compgen -G "$input_folder/*.fastq.gz" > /dev/null; then
+                for file in "$input_folder"/*.fastq.gz; do
+                    gzip -d -c "$file" > "$output_folder/$(basename "${file%.gz}")"
+                done
+                run_minimap2 "$output_folder"
+            elif [[ -f "$input_folder" && "$input_folder" == *.fastq.gz ]]; then
+                zcat "$input_folder" > "$output_folder/$(basename "${input_folder%.fastq.gz}").fastq"
+                run_minimap2 "$output_folder"
             elif [[ -f "$input_folder" && "$input_folder" == *.fastq ]]; then
                 cp "$input_folder" "$output_folder"
                 run_minimap2 "$output_folder"
@@ -466,9 +488,7 @@ main() {
     fi
 
     # --- Process SAM to BAM ---
-    if [[ -n "$vntr" ]]; then
-        process_files "$output_folder/*.sam" process_sam_to_bam
-    fi
+    process_files "$output_folder/*.sam" process_sam_to_bam
 
     # --- Length Haplotype Extraction ---
     declare -A result_array
@@ -495,6 +515,7 @@ main() {
             "$@" "$bam"
         done
     }
+   
     if [[ "$clair" == "Y" ]]; then
         if [[ "$whatshap_now" == "Y" && ( "$length_haplotype" == "Y" || "$pcr_or_wgs" == "0" ) && "$benchmarking" != "1" ]]; then
             for bam in "${!result_array[@]}"; do
@@ -502,9 +523,11 @@ main() {
                     run_clair3 "$bam"
                 fi
             done
-        else
-            #run_clair3_for_bams run_clair3
-            echo "place holder"
+        elif [[ ( "$whatshap_now" == "Y" && "$pcr_or_wgs" == "1" ) || "$benchmarking" == "1" ]]; then
+            for bam in "$output_folder"/*.bam; do
+                [[ -f "$bam" ]] || continue
+                run_clair3 "$bam"
+            done        
         fi
     fi
 
@@ -516,9 +539,11 @@ main() {
                     run_whatshap "$bam"
                 fi
             done
-        else
-            #run_clair3_for_bams run_whatshap
-            echo "placeholder"
+        elif [[ ( "$whatshap_now" == "Y" && "$pcr_or_wgs" == "1" ) || "$benchmarking" == "1" ]]; then
+            for bam in "$output_folder"/*.bam; do
+                [[ -f "$bam" ]] || continue
+                run_whatshap "$bam"
+            done   
         fi
     fi
 
@@ -529,28 +554,61 @@ main() {
             [[ -d "$dir" ]] || continue
             if compgen -G "$dir/output_TRViz" > /dev/null; then
                 if [[ "$(basename "$dir")" =~ length_haplotypes$ ]]; then
-                    if awk '/^>/ {if (l && l != seq) exit 1; l=seq; seq=0; next} {seq+=length} END {exit (l == seq) ? 0 : 1}' "$dir/output_TRViz/best_hit_combined.fasta"; then
+                    if [ -f "$dir/output_TRViz/best_hit_combined.fasta" ] && \
+                        awk '/^>/ {if (l && l != seq) exit 1; l=seq; seq=0; next} {seq+=length} END {exit (l == seq) ? 0 : 1}' "$dir/output_TRViz/best_hit_combined.fasta"; then
                         touch "$dir/###ERROR____$(basename "$dir")_____ERROR###___length_contig____#######"
                     fi
                 fi
                 mkdir -p -m 777 "$dir/assembly_mapping"
                 cat "$dir"/*.fastq > "$dir/assembly_mapping/$(basename "$dir").fastq"
-                if [[ -f "$dir/assembly_mapping/$(basename "$dir").fastq" ]]; then
-                    run_minimap2 "$dir/assembly_mapping" \
+                if [[ -f "$dir/assembly_mapping/$(basename "$dir").fastq" ]] && [[ "$pcr_or_wgs" == 0 ]]; then
+                    if [[ -f "$dir/output_TRViz/best_hit_combined.fasta" ]]; then
+                        run_minimap2 "$dir/assembly_mapping" \
                         "$dir/output_TRViz/best_hit_combined.fasta" \
+                        "$dir/assembly_mapping/$(basename "$dir").sam"
+                    elif [[ -f "$dir/output_TRViz/result_combined.fasta" ]]; then
+                        run_minimap2 "$dir/assembly_mapping" \
+                        "$dir/output_TRViz/result_combined.fasta" \
+                        "$dir/assembly_mapping/$(basename "$dir").sam"
+                    fi
+                fi
+                if [[ -f "$dir/assembly_mapping/$(basename "$dir").fastq" ]] && [[ "$pcr_or_wgs" == 1 ]]; then
+                    find "$dir" -name "*contigs.fasta" -type f | while read -r f; do
+                        fname=$(basename "$f" .fasta)   # strip .fasta extension
+                        awk -v prefix="$fname" '
+                        /^>/ {print ">" prefix "_" substr($0,2); next}
+                        {print}
+                        ' "$f" >> "$dir/combined_contigs.fasta"
+                    done
+                    run_minimap2 "$dir/assembly_mapping" \
+                        "$dir/combined_contigs.fasta" \
                         "$dir/assembly_mapping/$(basename "$dir").sam"
                 fi
 
                 conda activate samtools-env
-                samtools faidx "$dir/output_TRViz/best_hit_combined.fasta"
+                samtools faidx "$dir/output_TRViz/best_hit_combined.fasta" || true
+                samtools faidx "$dir/combined_contigs.fasta" || true
+                samtools faidx "$dir/output_TRViz/result_combined.fasta" || true
                 conda deactivate
+
+
 
                 if [[ -f "$dir/assembly_mapping/$(basename "$dir").sam" ]]; then
                     process_sam_to_bam "$dir/assembly_mapping/$(basename "$dir").sam"
                 fi
 
-                run_bcftools "$dir/assembly_mapping/$(basename "$dir").bam" "$dir/output_TRViz/best_hit_combined.fasta"
-                run_sniffles "$dir/assembly_mapping/$(basename "$dir").bam"
+                if [[ "$pcr_or_wgs" == 0 ]] && [[ -f "$dir/output_TRViz/best_hit_combined.fasta" ]]; then
+                    run_bcftools "$dir/assembly_mapping/$(basename "$dir").bam" "$dir/output_TRViz/best_hit_combined.fasta"
+                    run_sniffles "$dir/assembly_mapping/$(basename "$dir").bam"
+                elif [[ "$pcr_or_wgs" == 0 ]] && [[ -f "$dir/output_TRViz/result_combined.fasta" ]]; then
+                    run_bcftools "$dir/assembly_mapping/$(basename "$dir").bam" "$dir/output_TRViz/result_combined.fasta"
+                    run_sniffles "$dir/assembly_mapping/$(basename "$dir").bam"
+                fi
+                if [[ "$pcr_or_wgs" == 1 ]]; then
+                    run_bcftools "$dir/assembly_mapping/$(basename "$dir").bam" "$dir/combined_contigs.fasta"
+                    run_sniffles "$dir/assembly_mapping/$(basename "$dir").bam"
+                fi
+                
                 conda activate bcftools-env
                 bcf_error="$(bcftools view --no-header "$dir/assembly_mapping/$(basename "$dir")_bcf.vcf")"
                 sniffles_error="$(bcftools view --no-header "$dir/assembly_mapping/$(basename "$dir")_sv.vcf")"

@@ -7,6 +7,9 @@ work_dir=$4
 
 source /opt/conda/etc/profile.d/conda.sh
 
+script=$(readlink -f "${BASH_SOURCE[0]}")
+script_path=$(dirname "$script")
+
 all_bam=$(find "$work_dir" -maxdepth 1 -name "*haplotype*.bam")
 echo $all_bam
 for file in $all_bam
@@ -30,8 +33,8 @@ do
 	#extract seqs from .trimmed file
 	start_seq_rev=$(echo $start_seq | tr 'ATCGatcg' 'TAGCtagc' | rev)
 	end_seq_rev=$(echo $end_seq | tr 'ATCGatcg' 'TAGCtagc' | rev)
-	forward=$(zcat $work_dir/$input_base/$input_base.trimmedReads.fasta.gz | grep -o "$start_seq[^)]*$end_seq")
-	reverse=$(zcat $work_dir/$input_base/$input_base.trimmedReads.fasta.gz | grep -o "$end_seq_rev[^)]*$start_seq_rev")
+	forward=$(zcat $work_dir/$input_base/$input_base.trimmedReads.fasta.gz | "$script_path"/fuzzy_search.pl "$start_seq" "$end_seq" 1 )
+	reverse=$(zcat $work_dir/$input_base/$input_base.trimmedReads.fasta.gz | "$script_path"/fuzzy_search.pl "$end_seq_rev" "$start_seq_rev" 1 )
 
 	counter=1
 	for line in $forward

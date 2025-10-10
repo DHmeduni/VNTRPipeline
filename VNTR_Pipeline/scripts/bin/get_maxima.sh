@@ -3,7 +3,7 @@
 source /opt/conda/etc/profile.d/conda.sh
 
 # Check if correct number of arguments are provided
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Usage: $0 <input_file>"
     exit 1
 fi
@@ -11,6 +11,7 @@ fi
 input_file=$1
 threshold=$2
 separation=$3
+min_frequency=$4
 
 cd "$(dirname "$0")"
 
@@ -25,15 +26,16 @@ try:
     input_file = "$input_file"
     threshold = int("$threshold")
     separation = int("$separation")
+    min_frequency = int("$min_frequency")
     
-    maxima = find_maxima_from_file(input_file, threshold, separation)
+    maxima = find_maxima_from_file(input_file, threshold, separation, min_frequency)
     
     if len(maxima) == 2:
         print(f"{maxima[0]} {maxima[1]}")
     elif len(maxima) == 1:
         print(f"{maxima[0]}")
     else:
-        print("Error: Could not find one or two maxima.")
+        print("Error")
 except Exception as e:
     print(f"Error: {str(e)}")
 END

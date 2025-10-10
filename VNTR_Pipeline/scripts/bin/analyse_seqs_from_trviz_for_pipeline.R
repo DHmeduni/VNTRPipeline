@@ -99,8 +99,8 @@ for (seqs in all_seqs)
 in_frame_seq=nchar(all_compl_seqs)%%3==0 # change here if seq is not dividable by 3
 
 
-lof_check=cbind(all_sample_names,in_frame_seq,stop_counts)
-colnames(lof_check)=c("File Name","In Frame?","Stop Codon Count")
+#lof_check=cbind(all_sample_names,in_frame_seq,stop_counts)
+#colnames(lof_check)=c("File Name","In Frame?","Stop Codon Count")
 
-write.xlsx(lof_check, paste0(work_dir,"/LOF_check.xlsx"))
+#write.xlsx(lof_check, paste0(work_dir,"/LOF_check.xlsx"))
 

@@ -41,7 +41,43 @@ done
 genome_size="$VNTR_ASSEMBLY_SIZE"
 start_seq="$VNTR_BOUNDARY_SEQUENCE_LEFT"
 end_seq="$VNTR_BOUNDARY_SEQUENCE_RIGHT"
-motifs=$LIB_PATH/"$VNTR_MOTIFS"
+
+
+# motif folde is part of library or not
+if [[ "$VNTR_MOTIFS" == */* ]]; then
+    # VNTR_MOTIFS is a path
+    motifs="$VNTR_MOTIFS"
+else
+    # VNTR_MOTIFS is a folder name
+    motifs=$LIB_PATH/"$VNTR_MOTIFS"
+fi
+
+echo "$motifs"
+echo "$VNTR_MOTIFS"
+#read -p "Press any key to continue..."
+
+
+awk '{print $1}' "$motifs" > "$work_dir"/tmp_motif.txt
+
+motifs_tmp="$work_dir"/tmp_motif.txt
+
+#read -p "Press any key to continue..."
+
+
+if [[ "$ALL_FIGURES_CREATE" == "Y" ]]; then
+   conda activate python-env
+   if [[ "$VNTR_ALL" == "Y" ]]; then
+        python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/all_figures_result_combined.fasta "$motifs_tmp"
+   else    
+        python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/all_figures_best_hit_combined.fasta "$motifs_tmp"
+   fi
+   Rscript $script_path/analyse_seqs_from_trviz_for_pipeline.R $motifs_tmp $work_dir
+   Rscript $script_path/statistics_of_canu_trimmed_reads.R $work_dir
+   Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${NON_CODING:-N}
+   conda deactivate
+   exit 0
+fi
+
 
 
 if [[ "$mode" == "wgs" ]]
@@ -57,10 +93,13 @@ if [ -z "$work_dir" ] || [ -z "$genome_size" ] || [ -z "$start_seq" ]  || [ -z "
    helpFunction
 fi
 
-if { [[ "$mode" != "pcr" ]] && [[ "$mode" != "wgs" ]]; }  ||  { [[ "${locus^^}" != "ACAN" ]] && [[ "${locus^^}" != "MUC1" ]]; }; then
-	echo "the mode parameter -m must be 'pcr', 'wgs' , 'ACAN' or 'MUC1'!"
-	exit 1
+if { [[ "$mode" != "pcr" ]] && [[ "$mode" != "wgs" ]]; }; then
+	echo "the mode parameter -m must be 'pcr', 'wgs'!"
+	helpFunction
 fi
+
+
+
 
 # Begin script in case all parameters are correct
 echo "$work_dir"
@@ -89,24 +128,47 @@ conda activate python-env
 
 Rscript $script_path/count_seqs_of_canu_trimmed.R $work_dir
 
+if [[ "$VNTR_ALL" == "Y" ]]; then
+        #cat $work_dir/output_TRViz/*result.fasta > $work_dir/output_TRViz/result_combined.fasta
+        > "$work_dir/output_TRViz/result_combined.fasta"  # Truncate/initialize output
+        for f in "$work_dir/output_TRViz/"*result.fasta; do
+            awk '
+                /^>/ {
+                n++
+                if (n > 3) exit
+                print $1"_"$2
+                next
+                }
+                # Print sequence lines as is
+                {
+                print
+                }
+                ' "$f" >> "$work_dir/output_TRViz/result_combined.fasta"
+        done
 
-cat $work_dir/output_TRViz/*best_hit.fasta > $work_dir/output_TRViz/best_hit_combined.fasta
+else    
+        cat $work_dir/output_TRViz/*best_hit.fasta > $work_dir/output_TRViz/best_hit_combined.fasta
+fi
+
 
 
 #trviz
 echo "$work_dir"
 
 #TRVIz
-python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/ "$LIB_PATH"/"$VNTR_MOTIFS"
+if [[ "$VNTR_ALL" == "Y" ]]; then
+        python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/result_combined.fasta "$motifs_tmp"
+else    
+        python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/best_hit_combined.fasta "$motifs_tmp"
+fi
 
 
 #Run statistics
 
 
-Rscript $script_path/analyse_seqs_from_trviz_for_pipeline.R $LIB_PATH/$VNTR_MOTIFS $work_dir
+Rscript $script_path/analyse_seqs_from_trviz_for_pipeline.R $motifs_tmp $work_dir
 Rscript $script_path/statistics_of_canu_trimmed_reads.R $work_dir
-Rscript $script_path/trviz_plot_modified.R $work_dir $LIB_PATH/$VNTR_COLORS
-
-
+echo "$motifs"
+Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${NON_CODING:-N}
 
 conda deactivate

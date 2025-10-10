@@ -42,16 +42,8 @@ def generate_length_histogram(input_file, bin_size=10, output_file=None, x_min=N
     
     return lengths, plt
 
-import numpy as np
-
-import numpy as np
-
-import numpy as np
-
-import numpy as np
-
 def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
-                                    min_frequency=20, bin_size=10, percentage_min_frequency=0.01):
+                                    min_frequency=20, bin_size=10, percentage_min_frequency=0.025):
     """
     Find two maxima in a histogram of sequence lengths above a threshold.
     Rules:
@@ -75,7 +67,7 @@ def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
 
     # Find all peaks above adaptive minimum frequency
     peak_indices = np.where((histogram[1:-1] > histogram[:-2]) &
-                            (histogram[1:-1] > histogram[2:]) &
+                            (histogram[1:-1] >= histogram[2:]) &
                             (histogram[1:-1] >= adaptive_min_freq))[0] + 1
 
     if len(peak_indices) == 0:
@@ -119,7 +111,7 @@ def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
     return sorted([p for p in maxima])
 
 
-def find_maxima_from_file(input_file, threshold=2500, separation=50, output_file=None, min_frequency=20, bin_size=10, x_min=None, x_max=None, percentage_min_frequency=0.01):
+def find_maxima_from_file(input_file, threshold=2500, separation=50, min_frequency=20, output_file=None, bin_size=10, x_min=None, x_max=None, percentage_min_frequency=0.025):
     lengths, _ = generate_length_histogram(input_file, bin_size, None, x_min, x_max)
     maxima = find_two_maxima_above_threshold(lengths, threshold, separation, min_frequency, bin_size, percentage_min_frequency)
     peaks = [peak for freq, peak in maxima]
