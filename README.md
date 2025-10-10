@@ -92,7 +92,7 @@ docker run --rm -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:lates
 
 or in interactive mode:
 ```
-docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline
+docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest
 VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
 ```
 For other VNTRs, following parameters are necessary (example for CEL WGS data)
@@ -123,11 +123,11 @@ VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder
 
 **Other files/folders**
 | **_File name_**                        | **_Description_**                                                                                                                                                                                                                  
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| all_figures folder containing \*best_trviz_fig.png | Graphic VNTR output of all haplotypes and samples                                        |
-| All_Samples_new_and_lof_seqs.xlsx                  | All new and loss-of-function motifs and their positions combined for all samples         |
-| All_Samples_seqs_distribution.xlsx                 | Distribution of unique VNTR sequences after assembly/correction combined for all samples |
-| script.log                                         | Log file                                                                                 |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| all_figures folder containing \*best_trviz_fig.png, motifs_evaluation.xlsx and new_and_lof_seqs.xlsx | Graphic VNTR output of all haplotypes and samples, only present if ALL_FIGURES=Y is acitvated  |
+| All_Samples_new_and_lof_seqs.xlsx                  | All new and loss-of-function motifs and their positions combined for all samples               |
+| All_Samples_seqs_distribution.xlsx                 | Distribution of unique VNTR sequences after assembly/correction combined for all samples       |
+| script.log                                         | Log file                                                                                       |
 
 The following files are then of particular interest:
 - [best_trviz_fig.png](best_trviz_fig.pdf)
