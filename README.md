@@ -78,7 +78,7 @@ Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR
 from HG001 through HG004) is inside the docker image (inside test_data)
 
 ```
-docker run -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
+docker run --rm -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
 ```
 
 
