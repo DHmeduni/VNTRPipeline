@@ -58,6 +58,7 @@ VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, A
 DELETE_TMP=N               Retain the temporary files for troubleshooting
 ALL_FIGURES=Y              Only produces figures, based on already assembled and trimmed sequences of *best_hit.fasta files,
                            recursively to a depth of one subfolder from a folder that is given as input
+ALL_FIGURES=A              Additionally to the analysis of each sample a combined figure is produced
 NON_CODING=Y               Analyse VNTRs in non-coding regions, LoF prediction is skipped
 VNTR_PACBIO=Y              Process PacBio WGS Data
 WHATSHAP_FORCE=Y           Force Whatshap haplotyping
@@ -78,7 +79,7 @@ Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR
 from HG001 through HG004) is inside the docker image (inside test_data)
 
 ```
-docker run --rm -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 
+docker run --rm -v /output_directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest VNTR_pipeline -i /test_data -o /data/analysis -r t2t -p pcr -v MUC1 ALL_FIGURES=A
 ```
 
 
