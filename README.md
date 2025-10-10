@@ -137,7 +137,7 @@ The following files are then of particular interest:
 
 ## Quality Control
 
-The file *seqs_distribution.xlsx* in the *results folder shows the distribution of all corrected and trimmed sequences per haplotype. When analyzing PCR data, the most common sequence should represent a majority of all sequences found (first value compared with all subsequent values). If the first and second values are not significantly different, then there are two sequences with similar frequency present in one haplotype, indicating a problem with haplotype separation or the presence of a mosaic background. When analyzing WGS data, the file indicates the number of assembled and extractd VNTR sequences.
+The file *seqs_distribution.xlsx* in the *results folder shows the distribution of all corrected and trimmed sequences per haplotype. When analyzing PCR data, the most common sequence should represent a majority of all sequences found (first value compared with all subsequent values). If the first and second values are not significantly different, then there are two sequences with similar frequency present in one haplotype, indicating a problem with haplotype separation or the presence of a mosaic background. When analyzing WGS data, the file indicates the number of assembled and extraced VNTR sequences.
 
 Assembly Information is found in the directory /assembly_mapping
 - best_hit_combined.fasta (Reference)
