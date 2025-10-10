@@ -331,7 +331,7 @@ for dir in "$output_folder"/*haplotypes/; do
     find "$dir" -name "*###*" -type f -exec cp {} "$output_base"  \;
     find "$dir" -name "*best_hit.fasta" -type f -exec cp {} "$output_dir" \;    
     find "$dir" -name "*result.fasta" -type f -exec cp {} "$output_dir" \;
-    if [[ "$mode" == "0" ]] || [[ "$ASSEMBLY" == "Y" ]]; then
+    if [[ "$mode" == "pcr" ]] || [[ "$ASSEMBLY" == "Y" ]]; then
         find "$dir" -name "best_hit_combined*" -type f -exec cp {} "$output_dir/assembly_mapping"  \;
         find "$dir" -name "combined_contigs*" -type f -exec cp {} "$output_dir/assembly_mapping"  \;
         find "$dir" -name "result_combined*" -type f -exec cp {} "$output_dir/assembly_mapping"  \;
