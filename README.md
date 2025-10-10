@@ -75,7 +75,7 @@ Pre-saved options for *ACAN* and *MUC1* can be found here:
 
 ## Test Data
 
-Data to test the workflow (PCR Amplicons Sequencing data of the MUC1 VNTR 
+Data to test the workflow (PCR Amplicons Sequencing data of the *MUC1* VNTR 
 from HG001 through HG004) is inside the docker image (inside test_data)
 
 ```
@@ -96,7 +96,7 @@ or in interactive mode:
 docker run -it -v /directory/to/link:/data ghcr.io/dhmeduni/vntr_pipeline:latest
 VNTR_pipeline -i /data -o /data/analysis -r t2t -p pcr -v MUC1
 ```
-For other VNTRs, following parameters are necessary (example for CEL WGS data)
+For other VNTRs, following parameters are necessary (example for *CEL* WGS data)
 
 ```
 VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder> -r hg38 -p wgs VNTR_BOUNDARY_SEQUENCE_LEFT=TATCTGGCGCTGCCCACAGTGACCGACCAG VNTR_BOUNDARY_SEQUENCE_RIGHT=AAGGAAGCTCAGATGCCTGCAGTCATTAGGTTTTAG VNTR_ASSEMBLY_SIZE=560 VNTR_MIN_PRODUCT_SIZE=200 VNTR_REPEAT_SIZE=33 VNTR_COORDINATES_HG38=chr9:133071168-133071728 VNTR_MOTIFS=<folder_to>/motifs_cel_with_char_scheme.txt (VNTR_ALL=Y)
@@ -125,7 +125,7 @@ VNTR_pipeline -i <input_folder containing HG002_CEL_WGS.fastq> -o <output_folder
 **Other files/folders**
 | **_File name_**                        | **_Description_**                                                                                                                                                                                                                  
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| all_figures folder containing \*best_trviz_fig.png, motifs_evaluation.xlsx and new_and_lof_seqs.xlsx | Graphic VNTR output of all haplotypes and samples, only present if ALL_FIGURES=Y is acitvated  |
+| all_figures folder containing \*best_trviz_fig.png | Graphic VNTR output of all haplotypes and samples, only present if ALL_FIGURES=Y or ALL_FIGURES=A is acitvated  |
 | All_Samples_new_and_lof_seqs.xlsx                  | All new and loss-of-function motifs and their positions combined for all samples               |
 | All_Samples_seqs_distribution.xlsx                 | Distribution of unique VNTR sequences after assembly/correction combined for all samples       |
 | script.log                                         | Log file                                                                                       |
