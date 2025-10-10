@@ -15,8 +15,10 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         zlib1g-dev libbz2-dev liblzma-dev libboost-graph-dev \
         libcurl4-openssl-dev libssl-dev default-jdk pkg-config \
+	cpanminus build-essential perl \
         xz-utils curl jq wget bzip2 make g++ git parallel && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+	cpanm Text::Fuzzy
 
 # --- Miniconda installation ---
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
@@ -52,18 +54,15 @@ RUN conda create -n clair3-env python=3.9 -y && \
     conda run -n clair3-env pypy3 -m pip install mpmath==1.2.1 && \
     conda run -n clair3-env pip install tensorflow-addons && \
     conda clean -afy && \
-
     # Compile realign tools
     cd /opt/bin/preprocess/realign && \
     g++ -std=c++14 -O1 -shared -fPIC -o realigner ssw_cpp.cpp ssw.c realigner.cpp && \
     g++ -std=c++11 -shared -fPIC -o debruijn_graph -O3 debruijn_graph.cpp && \
-
     # Download clair3 models
     mkdir -p /opt/models && \
     wget http://www.bio8.cs.hku.hk/clair3/clair3_models/clair3_models.tar.gz -P /opt/models && \
     tar -zxvf /opt/models/clair3_models.tar.gz -C /opt/models && \
     rm /opt/models/clair3_models.tar.gz && \
-
     # Compile full pipeline
     make -C /opt/bin PREFIX=/opt/conda/envs/clair3-env PYTHON=/opt/conda/envs/clair3-env/bin/python && \
     rm -rf /opt/bin/samtools-* /opt/bin/longphase-*
