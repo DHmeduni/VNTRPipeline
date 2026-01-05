@@ -1,7 +1,7 @@
 # VNTRPipeline
 VNTR Analysis Pipeline for PCR and WGS datasets.
 
-This pipeline is associated with the research paper: (Link will be added upon paper acceptance)
+This pipeline is associated with the research paper: [Analysis of clinically relevant large tandem repeats using nanopore sequencing](https://www.nature.com/articles/s41598-025-30441-3)
 
 ## Introduction
 
