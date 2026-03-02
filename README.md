@@ -32,42 +32,68 @@ docker pull ghcr.io/dhmeduni/vntr_pipeline:latest
 ## Options
 
 ```
--h, --help    Print Help
+#################################################
+VNTR Pipeline Med Uni Wien Institute Medical Genetics
+This program calls loss-of-function mutations
+in VNTR regions.
+#################################################
+The pipeline is currently only built for
+the MUC1 VNTR, other options can be
+added by the user (please see Github).
 
-# required
--i            Input folder path (all existing bam and fastq/fastq.gz files are used for analysis) or specific input file name directly
+Samples must be presented as either bam or fastq.
+Output can be a subdirectory of input folder or own path.
+Test Data from HG001 to HG004 PCR reactions is
+found in the folder /test_data and can be copied to
+an external drive if desired.
+#################################################
+Syntax: script name [-c|h|i|o|p|r|v|] <image_name>
+options:
+-h, --help    Print this Help.
+-c            Commit Variables to cfg file (VNTR_NAME)
+-i            Input folder path/Input file
 -o            Output folder path
--r            hg38 or t2t (reference genome)
--p            pcr or wgs
--v            MUC1 or ACAN, (motif seqs and additional parameters are already set)
+-r            Reference Name hg38|t2t
+-p            PCR or WGS [pcr|wgs]
+-v            VNTR (MUC1 or ACAN, more will be added)
+-q/--quiet (future)
+--version (future)
 
-#For other VNTRs/motifs, instead of -v, the following additional options have to be set when executing VNTR_pipeline.
+#################################################
+#add for other VNTRs
+For other VNTRs/motifs, instead of -v, the following additional options have to be set when executing VNTR_pipeline.
 These variables can be committed to the configuration file by adding the option -c {VNTR NAME} and must be added after the above options.
-Note: any of the below options used with the –v {VNTR_NAME} option will override the values for the current run.
-VNTR_BOUNDARY_SEQUENCE_LEFT    Sequence at beginning of VNTR (will be used to extract the VNTR, one mismatch allowed)
-VNTR_BOUNDARY_SEQUENCE_RIGHT   Sequence at end of VNTR (will be used to extract the VNTR, one mismatch allowed)
-VNTR_ASSEMBLY_SIZE             Approximate size of PCR Product (e.g.: 500, 1k, 3k, 10k,), used for PCR data, minimum should be 500
-VNTR_MIN_PRODUCT_SIZE          Minimum PCR Product Size expected, necessary for filtering
-VNTR_REPEAT_SIZE               The Number of bases found in one repeat unit of the VNTR
-VNTR_COORDINATES_T2T           T2T-chm13v2.0 Reference coordinates of the VNTR for filtering in the format [chr]:[start]-[end]
-VNTR_COORDINATES_HG38          GRCh38.p14 Reference coordinates of the VNTR for filtering in the format [chr]:[start]-[end]
-VNTR_MOTIFS                    Path to VNTR Motif file, containing Sequencing, Aplhanumeric Designation and Color code,
-                               tab separated .txt file, example files are available on github
+Note: any of the below options used with the –v {VNTR_NAME} option will override the values saved to the configuration file.
+
+VNTR_BOUNDARY_SEQUENCE_LEFT   Sequence at beginning of VNTR (will be used to extract the VNTR, one mismatch allowed)
+VNTR_BOUNDARY_SEQUENCE_RIGHT  Sequence at end of VNTR (will be used to extract the VNTR, one mismatch allowed)
+VNTR_ASSEMBLY_SIZE            Approximate size of PCR Product (e.g.: 500, 1k, 3k, 10k,), used for PCR data, minimum should be 500
+VNTR_MIN_PRODUCT_SIZE         Minimum PCR Product Size expected, necessary for filtering
+VNTR_REPEAT_SIZE              The Number of bases found in one repeat unit of the VNTR
+VNTR_COORDINATES_T2T          T2T-chm13v2.0 Reference coordinates of the VNTR for filtering in the format [chr]:[start]-[end]
+VNTR_COORDINATES_HG38         GRCh38.p14 Reference coordinates of the VNTR for filtering in the format [chr]:[start]-[end]
+VNTR_MOTIFS                   Path to VNTR Motif file, containing Sequencing, Alphanumeric Designation and Color code, tab separated .txt file, example files are available on github
 
 #Following options may be added:
-DELETE_TMP=N               Retain the temporary files for troubleshooting
-ALL_FIGURES=Y              Only produces figures, based on already assembled and trimmed sequences of *best_hit.fasta files,
-                           recursively to a depth of one subfolder from a folder that is given as input
-ALL_FIGURES=A              Additionally to the analysis of each sample a combined figure is produced
-NON_CODING=Y               Analyse VNTRs in non-coding regions, LoF prediction is skipped
-VNTR_PACBIO=Y              Process PacBio WGS Data
-WHATSHAP_FORCE=Y           Force Whatshap haplotyping
-VNTR_ALL=Y                 Analyse all VNTRs (assemblies or polished sequences the top three most common sequences per haplotype)
-                           found by the workflow (pseudogenes/duplications)
-CONFIG_FILE                Define another path for the configuration file (CONFIG_FILE=/path/to/file)
-LENGTH_1                   Define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500), default is automatic
-LENGTH_2                   Define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000), default is automatic
-MIN_FREQUENCY              Temporarily lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=20)
+
+DELETE_TMP=N                  Retain the temporary files for troubleshooting
+ALL_FIGURES=Y                 Only produces figures, based on already assembled and trimmed sequences of *best_hit.fasta files, recursively to a depth of one subfolder from a folder that is given as input
+ALL_FIGURES=A                 Additionally to the analysis of each sample a combined figure is produced
+NON_CODING=Y                  Analyse VNTRs in non-coding regions, LoF prediction is skipped
+VNTR_ALL=Y                    Analyse all VNTRs (assemblies or polished sequences the top three most common sequences per haplotype) found by the workflow (pseudogenes/duplications)
+VNTR_PACBIO=Y                 Process PacBio WGS Data
+WHATSHAP_FORCE=Y              Force Whatshap haplotyping
+CONFIG_FILE                   Define another path for the configuration file (CONFIG_FILE=/path/to/file)
+LENGTH_1                      Define the shorter of two lengths for length based haplotyping (e.g. LENGTH_1=2500), default is automatic
+LENGTH_2                      Define the longer of two lengths for length based haplotyping (e.g LENGTH_2=3000), default is automatic
+MIN_FREQUENCY                 Temporarily lower the minimum frequency threshold for length based haplotyping (default MIN_FREQUENCY=10)
+
+
+#################################################
+
+Example Usage:
+
+           {VNTR_pipeline.sh} -o /path/to/output -i /path/to/bam/or/fastq -p pcr -r hg38 -v MUC1
 
 ```
 Pre-saved options for *ACAN* and *MUC1* can be found here:
