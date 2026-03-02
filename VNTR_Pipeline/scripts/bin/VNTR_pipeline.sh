@@ -57,7 +57,7 @@ Help() {
     echo ""
     echo "#Following options may be added:"
     echo ""
-    echo "TMP_DELETE=N                  Retain the temporary files for troubleshooting"
+    echo "DELETE_TMP=N                  Retain the temporary files for troubleshooting"
     echo "ALL_FIGURES=Y                 Only produces figures, based on already assembled and trimmed sequences of *best_hit.fasta files, recursively to a depth of one subfolder from a folder that is given as input"
     echo "ALL_FIGURES=A                 Additionally to the analysis of each sample a combined figure is produced"
     echo "NON_CODING=Y                  Analyse VNTRs in non-coding regions, LoF prediction is skipped"
@@ -119,7 +119,7 @@ while getopts "c:hi:m:o:p:r:qs:v:V-:" option; do
             variant_caller_options+=("-r" "/references/"$reference".fa") ;;
         s) # sample_sheet (absolute path)
             sample_sheet="$OPTARG" 
-            variant_caller_options+=("-s" "/$input_folder/"$OPTARG"") ;;
+            variant_caller_options+=("-s" "$OPTARG") ;;
         q) # quiet option
             quiet_opt="-q" ;;
         p) # pcr or wgs [pcr 0 | wgs 1]
@@ -168,21 +168,22 @@ done
 # Shift away processed options
 shift $((OPTIND - 1))
 
-# --- Parse key=value arguments safely ---
-for arg in "$@"; do
-  if [[ "$arg" =~ ^[A-Za-z_][A-Za-z0-9_]*=.+$ ]]; then
-    key=${arg%%=*}
-    val=${arg#*=}   
-    # Remove surrounding quotes if present
-    if [[ "$val" =~ ^\".*\"$ || "$val" =~ ^\'.*\'$ ]]; then
-      val="${val:1:-1}"
+parse_kv_args() {
+  # --- Parse key=value arguments safely ---
+  for arg in "$@"; do
+    if [[ "$arg" =~ ^[A-Za-z_][A-Za-z0-9_]*=.+$ ]]; then
+      key=${arg%%=*}
+      val=${arg#*=}
+      # Remove surrounding quotes if present
+      if [[ "$val" =~ ^\".*\"$ || "$val" =~ ^\'.*\'$ ]]; then
+        val="${val:1:-1}"
+      fi
+      declare -g "$key=$val"
+    else
+      echo "⚠️ Warning: Unrecognized argument '$arg'" >&2
     fi
-    declare "$key=$val"
-  else
-    echo "⚠️ Warning: Unrecognized argument '$arg'" >&2
-  fi
-done
-
+  done
+}
 
 if [[ -n $vntr ]] && [[ -z $commit_variables ]]; then
     source "$script_path"/config_parse.sh
@@ -191,11 +192,14 @@ if [[ -n $vntr ]] && [[ -z $commit_variables ]]; then
     exit 1
     }
     validate_vntr_variables
+    parse_kv_args "$@"
 elif [[ -n $commit_variables ]]; then
+    parse_kv_args "$@"
     source "$script_path"/config_parse.sh
     validate_vntr_variables
     commit_vntr_variables "$commit_variables"
 else
+    parse_kv_args "$@"
     source "$script_path"/config_parse.sh
     validate_vntr_variables || {
     echo "VNTR variables missing!"
@@ -242,17 +246,32 @@ create_all_figures() {
     declare "ALL_FIGURES_CREATE=Y"
     export ALL_FIGURES_CREATE
     mkdir -m 777 -p "$output_base/output_TRViz/"
-    if [[ "$VNTR_ALL" == "Y" ]]; then
+    if [[ -n "$VNTR_ALL" ]]; then
         #find "$1" -name "*result_comi.fasta" -type f -exec cat {} + > "$output_base/output_TRViz/all_figures_result_combined.fasta" -path "$output_folder" -prune -o
-        find "$1" -maxdepth 2 -name "*result.fasta" -type f -exec awk '
+        find "$1" -maxdepth 2 -name "*result.fasta" -type f -exec awk -v max_n="$VNTR_ALL" '
             /^>/ {
             n++
-            if (n > 3) exit
+            if (n > max_n) exit
             print $1"_"$2
             next
             }
             { print }
             ' {} \; > "$output_base"/output_TRViz/all_figures_result_combined.fasta
+        echo "$output_base"/output_TRViz/all_figures_result_combined.fasta | while read -r fasta; do
+               awk '
+                BEGIN { header=""; seq="" }
+                /^>/ {
+                if (header && seq && seq !~ /[^ACGT]/) print header "\n" seq
+                header=$0; seq=""
+                }
+                /^[^>]/ {
+                seq = seq $0
+                }
+                END {
+                if (header && seq && seq !~ /[^ACGT]/) print header "\n" seq
+                }
+                ' "$fasta" > "${fasta}.tmp" && mv "${fasta}.tmp" "$fasta"
+                done
     else    
         find "$1" -maxdepth 2 -name "*best_hit.fasta" -type f -exec cat {} + > "$output_base/output_TRViz/all_figures_best_hit_combined.fasta"
         #-path "$output_folder" -prune -o 
@@ -283,6 +302,7 @@ fi
 
 
 declare -A options
+options["2"]="-al"
 options["1"]="-awc"
 options["0"]="-awlc"
 
@@ -291,6 +311,8 @@ options_list="${options["$pcr_or_wgs"]}"
 
 if [[ $WHATSHAP_FORCE == "Y" ]]; then
     options_list="${options[1]}"
+elif [[ $WHATSHAP_FORCE == "N" ]]; then
+    options_list="${options[2]}"
 fi
 
 variant_caller_options+=("-o" "$(readlink -f "$output_folder")")
@@ -331,6 +353,7 @@ for dir in "$output_folder"/*haplotypes/; do
     find "$dir" -name "*###*" -type f -exec cp {} "$output_base"  \;
     find "$dir" -name "*best_hit.fasta" -type f -exec cp {} "$output_dir" \;    
     find "$dir" -name "*result.fasta" -type f -exec cp {} "$output_dir" \;
+    find "$dir" -name "*sequence.fa" -type f -exec cp {} "$output_dir" \;
     if [[ "$mode" == "pcr" ]] || [[ "$ASSEMBLY" == "Y" ]]; then
         mkdir -m 777 -p "$output_dir/assembly_mapping"
         find "$dir" -name "best_hit_combined*" -type f -exec cp {} "$output_dir/assembly_mapping"  \;
@@ -338,6 +361,9 @@ for dir in "$output_folder"/*haplotypes/; do
         find "$dir" -name "result_combined*" -type f -exec cp {} "$output_dir/assembly_mapping"  \;
         find "$dir" -type d -name "assembly_mapping" -exec cp -r {} "$output_dir"  \;
     fi
+    conda activate python-env
+    python "$script_path"/sample_report.py "$output_dir" "$( [ -f "$sample_sheet" ] && echo "$sample_sheet" || echo "$(dirname "$input_folder")/sample_sheet.csv" )"
+    echo "$script_path"/sample_report.py "$output_dir" "$( [ -f "$sample_sheet" ] && echo "$sample_sheet" || echo "$(dirname "$input_folder")/sample_sheet.csv" )"
 done
 
 find "$output_folder" \( -name "script.log"  \) -type f -exec cp {} "$output_base"  \;

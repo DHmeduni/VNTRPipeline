@@ -580,9 +580,11 @@ main() {
                         {print}
                         ' "$f" >> "$dir/combined_contigs.fasta"
                     done
+                    #take care and return to combined_contig if needed!
                     run_minimap2 "$dir/assembly_mapping" \
-                        "$dir/combined_contigs.fasta" \
+                        "$dir/output_TRViz/best_hit_combined.fasta" \
                         "$dir/assembly_mapping/$(basename "$dir").sam"
+                    
                 fi
 
                 conda activate samtools-env

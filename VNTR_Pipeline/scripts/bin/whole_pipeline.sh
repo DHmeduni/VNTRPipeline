@@ -57,6 +57,18 @@ echo "$VNTR_MOTIFS"
 #read -p "Press any key to continue..."
 
 
+VNTR_PROTEIN_MOTIFS="${VNTR_PROTEIN_MOTIFS:-NON_CODING}"
+
+# motif folde is part of library or not
+if [[ "$VNTR_PROTEIN_MOTIFS" == */* ]]; then
+    # VNTR_MOTIFS is a path
+    motifs_protein="$VNTR_PROTEIN_MOTIFS"
+else
+    # VNTR_MOTIFS is a folder name
+    motifs_protein=$LIB_PATH/"$VNTR_PROTEIN_MOTIFS"
+fi
+
+
 awk '{print $1}' "$motifs" > "$work_dir"/tmp_motif.txt
 
 motifs_tmp="$work_dir"/tmp_motif.txt
@@ -66,14 +78,14 @@ motifs_tmp="$work_dir"/tmp_motif.txt
 
 if [[ "$ALL_FIGURES_CREATE" == "Y" ]]; then
    conda activate python-env
-   if [[ "$VNTR_ALL" == "Y" ]]; then
+   if [[ -n "$VNTR_ALL" ]]; then
         python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/all_figures_result_combined.fasta "$motifs_tmp"
    else    
         python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/all_figures_best_hit_combined.fasta "$motifs_tmp"
    fi
    Rscript $script_path/analyse_seqs_from_trviz_for_pipeline.R $motifs_tmp $work_dir
    Rscript $script_path/statistics_of_canu_trimmed_reads.R $work_dir
-   Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${NON_CODING:-N}
+   Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${motifs_protein:-N} ${NON_CODING:-N}
    conda deactivate
    exit 0
 fi
@@ -128,14 +140,14 @@ conda activate python-env
 
 Rscript $script_path/count_seqs_of_canu_trimmed.R $work_dir
 
-if [[ "$VNTR_ALL" == "Y" ]]; then
+if [[ -n "$VNTR_ALL" ]]; then
         #cat $work_dir/output_TRViz/*result.fasta > $work_dir/output_TRViz/result_combined.fasta
         > "$work_dir/output_TRViz/result_combined.fasta"  # Truncate/initialize output
         for f in "$work_dir/output_TRViz/"*result.fasta; do
-            awk '
+            awk -v max_n="$VNTR_ALL" '
                 /^>/ {
                 n++
-                if (n > 3) exit
+                if (n > max_n) exit
                 print $1"_"$2
                 next
                 }
@@ -145,7 +157,21 @@ if [[ "$VNTR_ALL" == "Y" ]]; then
                 }
                 ' "$f" >> "$work_dir/output_TRViz/result_combined.fasta"
         done
-
+        echo "${work_dir}/output_TRViz/result_combined.fasta" | while read -r fasta; do
+               awk '
+                BEGIN { header=""; seq="" }
+                /^>/ {
+                if (header && seq && seq !~ /[^ACGT]/) print header "\n" seq
+                header=$0; seq=""
+                }
+                /^[^>]/ {
+                seq = seq $0
+                }
+                END {
+                if (header && seq && seq !~ /[^ACGT]/) print header "\n" seq
+                }
+                ' "$fasta" > "${fasta}.tmp" && mv "${fasta}.tmp" "$fasta"
+                done
 else    
         cat $work_dir/output_TRViz/*best_hit.fasta > $work_dir/output_TRViz/best_hit_combined.fasta
 fi
@@ -156,7 +182,7 @@ fi
 echo "$work_dir"
 
 #TRVIz
-if [[ "$VNTR_ALL" == "Y" ]]; then
+if [[ -n "$VNTR_ALL" ]]; then
         python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/result_combined.fasta "$motifs_tmp"
 else    
         python "$script_path"/trviz_script.py "$work_dir"/output_TRViz/best_hit_combined.fasta "$motifs_tmp"
@@ -169,6 +195,6 @@ fi
 Rscript $script_path/analyse_seqs_from_trviz_for_pipeline.R $motifs_tmp $work_dir
 Rscript $script_path/statistics_of_canu_trimmed_reads.R $work_dir
 echo "$motifs"
-Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${NON_CODING:-N}
+Rscript $script_path/trviz_plot_modified.R $work_dir $motifs ${motifs_protein:-N} ${NON_CODING:-N}
 
 conda deactivate

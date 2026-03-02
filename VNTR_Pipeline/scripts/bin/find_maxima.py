@@ -43,7 +43,7 @@ def generate_length_histogram(input_file, bin_size=10, output_file=None, x_min=N
     return lengths, plt
 
 def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
-                                    min_frequency=20, bin_size=10, percentage_min_frequency=0.025):
+                                    min_frequency=20, bin_size=10, percentage_min_frequency=0.025, max_loss=1):
     """
     Find two maxima in a histogram of sequence lengths above a threshold.
     Rules:
@@ -94,7 +94,7 @@ def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
 
         # Apply rules based on relative peak position
         if peak < first_peak:  # shorter candidate
-            if freq < 1 * first_freq:
+            if freq < max_loss * first_freq:
                 continue
         else:  # longer candidate
             if freq < adaptive_min_freq:
@@ -111,9 +111,9 @@ def find_two_maxima_above_threshold(lengths, threshold=2500, min_separation=50,
     return sorted([p for p in maxima])
 
 
-def find_maxima_from_file(input_file, threshold=2500, separation=50, min_frequency=20, output_file=None, bin_size=10, x_min=None, x_max=None, percentage_min_frequency=0.025):
+def find_maxima_from_file(input_file, threshold=2500, separation=50, min_frequency=20, percentage_min_frequency=0.025, max_loss=1, output_file=None, bin_size=10, x_min=None, x_max=None):
     lengths, _ = generate_length_histogram(input_file, bin_size, None, x_min, x_max)
-    maxima = find_two_maxima_above_threshold(lengths, threshold, separation, min_frequency, bin_size, percentage_min_frequency)
+    maxima = find_two_maxima_above_threshold(lengths, threshold, separation, min_frequency, bin_size, percentage_min_frequency, max_loss)
     peaks = [peak for freq, peak in maxima]
 
     if output_file is not None:
@@ -134,6 +134,8 @@ def main():
     parser.add_argument('-t', '--threshold', type=int, default=2500, help="Threshold for finding maxima (default is 2500)")
     parser.add_argument('-s', '--separation', type=int, default=50, help="Minimum separation between maxima (default is 100)")
     parser.add_argument('-m', '--min_frequency', type=int, default=20, help="Minimum frequency to be determined to be a maxima")
+    parser.add_argument('-l', '--max_loss', type=float, default=1, help="Comparable frequency of shorter fragments of max")
+    parser.add_argument('-n', '--min_loss', type=float, default=0.025, help="Comparable frequency of longer fragments of max")
     
     args = parser.parse_args()
     
@@ -141,7 +143,7 @@ def main():
     lengths, plt = generate_length_histogram(args.input, args.bin_size, args.output, args.x_min, args.x_max)
     
     # Find two maxima above the threshold with a minimum separation
-    maxima = find_two_maxima_above_threshold(lengths, args.threshold, args.separation, args.min_frequency, args.bin_size)
+    maxima = find_two_maxima_above_threshold(lengths, args.threshold, args.separation, args.min_frequency, args.bin_size, args.min_loss, args.max_loss)
     
     if len(maxima) == 2:
         print(f"The two maxima above the threshold of {args.threshold} bp, separated by at least {args.separation} bp are: {maxima[0][1]:.0f} bp and {maxima[1][1]:.0f} bp")

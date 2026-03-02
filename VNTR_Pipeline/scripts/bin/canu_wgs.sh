@@ -9,6 +9,7 @@ source /opt/conda/etc/profile.d/conda.sh
 
 script=$(readlink -f "${BASH_SOURCE[0]}")
 script_path=$(dirname "$script")
+MISMATCHES="${MISMATCHES:-1}"
 
 all_bam=$(find "$work_dir" -maxdepth 1 -name "*haplotype*.bam")
 echo $all_bam
@@ -35,10 +36,10 @@ do
 	awk -v ORS= '/^>/ { $0 = (NR==1 ? "" : RS) $0 RS } END { printf RS }1' $work_dir/$input_base/$input_base.contigs.fasta > $work_dir/$input_base/$input_base.contigs_no_new_line.fasta
 	# shellcheck disable=SC1087
 	#forward=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | perl -n -e "print \"\$&\n\" while /$start_seq.*?$end_seq/g")
-	forward=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | "$script_path"/fuzzy_search.pl "$start_seq" "$end_seq" 1 )
+	forward=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | "$script_path"/fuzzy_search.pl "$start_seq" "$end_seq" "$MISMATCHES" )
 	# shellcheck disable=SC1087
 	#reverse=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | perl -n -e "print \"\$&\n\" while /$end_seq_rev.*?$start_seq_rev/g")
-	reverse=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | "$script_path"/fuzzy_search.pl "$end_seq_rev" "$start_seq_rev" 1 )
+	reverse=$(cat $work_dir/$input_base/$input_base.contigs_no_new_line.fasta | "$script_path"/fuzzy_search.pl "$end_seq_rev" "$start_seq_rev" "$MISMATCHES" )
  
 	counter=1
 	for line in $forward
